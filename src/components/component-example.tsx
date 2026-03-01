@@ -63,7 +63,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { RiAddLine, RiBluetoothLine, RiMore2Line, RiFileLine, RiFolderLine, RiFolderOpenLine, RiCodeLine, RiMoreLine, RiSearchLine, RiSaveLine, RiDownloadLine, RiEyeLine, RiLayoutLine, RiPaletteLine, RiSunLine, RiMoonLine, RiComputerLine, RiUserLine, RiBankCardLine, RiSettingsLine, RiKeyboardLine, RiTranslate, RiNotificationLine, RiMailLine, RiShieldLine, RiQuestionLine, RiFileTextLine, RiLogoutBoxLine } from "@remixicon/react"
+import { PlusIcon, BluetoothIcon, DotsThreeVerticalIcon, FileIcon, FolderIcon, FolderOpenIcon, CodeIcon, DotsThreeOutlineIcon, MagnifyingGlassIcon, FloppyDiskIcon, DownloadIcon, EyeIcon, LayoutIcon, PaletteIcon, SunIcon, MoonIcon, MonitorIcon, UserIcon, CreditCardIcon, GearIcon, KeyboardIcon, TranslateIcon, BellIcon, EnvelopeIcon, ShieldIcon, QuestionIcon, FileTextIcon, SignOutIcon } from "@phosphor-icons/react"
 
 export function ComponentExample() {
   return (
@@ -97,14 +97,14 @@ function CardExample() {
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button>
-                <RiAddLine data-icon="inline-start" />
+                <PlusIcon data-icon="inline-start" />
                 Show Dialog
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent size="sm">
               <AlertDialogHeader>
                 <AlertDialogMedia>
-                  <RiBluetoothLine
+                  <BluetoothIcon
                   />
                 </AlertDialogMedia>
                 <AlertDialogTitle>Allow accessory to connect?</AlertDialogTitle>
@@ -154,7 +154,7 @@ function FormExample() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <RiMore2Line
+                  <DotsThreeVerticalIcon
                   />
                   <span className="sr-only">More options</span>
                 </Button>
@@ -163,20 +163,20 @@ function FormExample() {
                 <DropdownMenuGroup>
                   <DropdownMenuLabel>File</DropdownMenuLabel>
                   <DropdownMenuItem>
-                    <RiFileLine
+                    <FileIcon
                     />
                     New File
                     <DropdownMenuShortcut>⌘N</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <RiFolderLine
+                    <FolderIcon
                     />
                     New Folder
                     <DropdownMenuShortcut>⇧⌘N</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
-                      <RiFolderOpenLine
+                      <FolderOpenIcon
                       />
                       Open Recent
                     </DropdownMenuSubTrigger>
@@ -185,30 +185,30 @@ function FormExample() {
                         <DropdownMenuGroup>
                           <DropdownMenuLabel>Recent Projects</DropdownMenuLabel>
                           <DropdownMenuItem>
-                            <RiCodeLine
+                            <CodeIcon
                             />
                             Project Alpha
                           </DropdownMenuItem>
                           <DropdownMenuItem>
-                            <RiCodeLine
+                            <CodeIcon
                             />
                             Project Beta
                           </DropdownMenuItem>
                           <DropdownMenuSub>
                             <DropdownMenuSubTrigger>
-                              <RiMoreLine
+                              <DotsThreeOutlineIcon
                               />
                               More Projects
                             </DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                               <DropdownMenuSubContent>
                                 <DropdownMenuItem>
-                                  <RiCodeLine
+                                  <CodeIcon
                                   />
                                   Project Gamma
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                  <RiCodeLine
+                                  <CodeIcon
                                   />
                                   Project Delta
                                 </DropdownMenuItem>
@@ -219,7 +219,7 @@ function FormExample() {
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                           <DropdownMenuItem>
-                            <RiSearchLine
+                            <MagnifyingGlassIcon
                             />
                             Browse...
                           </DropdownMenuItem>
@@ -229,13 +229,13 @@ function FormExample() {
                   </DropdownMenuSub>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <RiSaveLine
+                    <FloppyDiskIcon
                     />
                     Save
                     <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <RiDownloadLine
+                    <DownloadIcon
                     />
                     Export
                     <DropdownMenuShortcut>⇧⌘E</DropdownMenuShortcut>
@@ -253,7 +253,7 @@ function FormExample() {
                       })
                     }
                   >
-                    <RiEyeLine
+                    <EyeIcon
                     />
                     Show Sidebar
                   </DropdownMenuCheckboxItem>
@@ -266,13 +266,13 @@ function FormExample() {
                       })
                     }
                   >
-                    <RiLayoutLine
+                    <LayoutIcon
                     />
                     Show Status Bar
                   </DropdownMenuCheckboxItem>
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
-                      <RiPaletteLine
+                      <PaletteIcon
                       />
                       Theme
                     </DropdownMenuSubTrigger>
@@ -285,17 +285,17 @@ function FormExample() {
                             onValueChange={setTheme}
                           >
                             <DropdownMenuRadioItem value="light">
-                              <RiSunLine
+                              <SunIcon
                               />
                               Light
                             </DropdownMenuRadioItem>
                             <DropdownMenuRadioItem value="dark">
-                              <RiMoonLine
+                              <MoonIcon
                               />
                               Dark
                             </DropdownMenuRadioItem>
                             <DropdownMenuRadioItem value="system">
-                              <RiComputerLine
+                              <MonitorIcon
                               />
                               System
                             </DropdownMenuRadioItem>
@@ -309,19 +309,19 @@ function FormExample() {
                 <DropdownMenuGroup>
                   <DropdownMenuLabel>Account</DropdownMenuLabel>
                   <DropdownMenuItem>
-                    <RiUserLine
+                    <UserIcon
                     />
                     Profile
                     <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <RiBankCardLine
+                    <CreditCardIcon
                     />
                     Billing
                   </DropdownMenuItem>
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>
-                      <RiSettingsLine
+                      <GearIcon
                       />
                       Settings
                     </DropdownMenuSubTrigger>
@@ -330,18 +330,18 @@ function FormExample() {
                         <DropdownMenuGroup>
                           <DropdownMenuLabel>Preferences</DropdownMenuLabel>
                           <DropdownMenuItem>
-                            <RiKeyboardLine
+                            <KeyboardIcon
                             />
                             Keyboard Shortcuts
                           </DropdownMenuItem>
                           <DropdownMenuItem>
-                            <RiTranslate
+                            <TranslateIcon
                             />
                             Language
                           </DropdownMenuItem>
                           <DropdownMenuSub>
                             <DropdownMenuSubTrigger>
-                              <RiNotificationLine
+                              <BellIcon
                               />
                               Notifications
                             </DropdownMenuSubTrigger>
@@ -360,7 +360,7 @@ function FormExample() {
                                       })
                                     }
                                   >
-                                    <RiNotificationLine
+                                    <BellIcon
                                     />
                                     Push Notifications
                                   </DropdownMenuCheckboxItem>
@@ -373,7 +373,7 @@ function FormExample() {
                                       })
                                     }
                                   >
-                                    <RiMailLine
+                                    <EnvelopeIcon
                                     />
                                     Email Notifications
                                   </DropdownMenuCheckboxItem>
@@ -385,7 +385,7 @@ function FormExample() {
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                           <DropdownMenuItem>
-                            <RiShieldLine
+                            <ShieldIcon
                             />
                             Privacy & Security
                           </DropdownMenuItem>
@@ -397,12 +397,12 @@ function FormExample() {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem>
-                    <RiQuestionLine
+                    <QuestionIcon
                     />
                     Help & Support
                   </DropdownMenuItem>
                   <DropdownMenuItem>
-                    <RiFileTextLine
+                    <FileTextIcon
                     />
                     Documentation
                   </DropdownMenuItem>
@@ -410,7 +410,7 @@ function FormExample() {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem variant="destructive">
-                    <RiLogoutBoxLine
+                    <SignOutIcon
                     />
                     Sign Out
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

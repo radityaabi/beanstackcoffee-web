@@ -8,10 +8,10 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+_references
 dist
 dist-ssr
 *.local
-_references
 
 # Editor directories and files
 .vscode/*
