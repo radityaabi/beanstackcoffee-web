@@ -18,8 +18,7 @@ export function MainLayout() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
 
-  const totalItems =
-    cart?.items?.reduce((acc, item) => acc + (item.quantity ?? 0), 0) || 0;
+  const totalItems = cart?.items?.length ?? 0;
 
   return (
     <div className="flex flex-col min-h-screen">
