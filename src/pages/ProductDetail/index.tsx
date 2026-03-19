@@ -161,7 +161,7 @@ export default function ProductDetail() {
 
             <div className="mt-auto">
               {product.stockQuantity > 0 ? (
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-row gap-4">
                   <div className="flex items-center border border-border rounded-md w-32 shrink-0">
                     <Button
                       variant="ghost"
@@ -193,10 +193,16 @@ export default function ProductDetail() {
                     size="lg"
                     onClick={handleAddToCart}
                     disabled={isAdding}
-                    className="flex-1 h-12 flex items-center justify-center gap-2 hover:cursor-pointer hover:bg-teal-700"
+                    className="flex-1 h-12 flex items-center justify-center gap-2 hover:cursor-pointer hover:bg-teal-700 px-0 sm:px-8"
                   >
-                    <ShoppingCartIcon weight="bold" className="w-5 h-5" />
-                    {isAdding ? "Menambahkan..." : "Tambah ke Keranjang"}
+                    {isAdding ? (
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-background"></div>
+                    ) : (
+                      <ShoppingCartIcon weight="bold" className="w-5 h-5" />
+                    )}
+                    <span className="hidden sm:inline">
+                      {isAdding ? "Menambahkan..." : "Tambah ke Keranjang"}
+                    </span>
                   </Button>
                 </div>
               ) : (
