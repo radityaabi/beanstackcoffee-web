@@ -103,7 +103,7 @@ export default function Cart() {
                 {cart.items.map((item) => (
                   <div
                     key={item.id}
-                    className="p-4 flex flex-col md:grid md:grid-cols-12 md:items-center gap-4 hover:bg-muted/10 transition"
+                    className="relative p-4 flex flex-col md:grid md:grid-cols-12 md:items-center gap-4 hover:bg-muted/10 transition"
                   >
                     <div className="col-span-6 flex items-center gap-4">
                       <div className="w-20 h-20 bg-background rounded-md border border-border flex items-center justify-center p-2 shrink-0">
@@ -116,7 +116,7 @@ export default function Cart() {
                           className="max-h-full object-contain"
                         />
                       </div>
-                      <div>
+                      <div className="pr-14 md:pr-0">
                         <Link
                           to={`/products/${item.product?.slug}`}
                           className="font-semibold text-foreground hover:text-primary transition line-clamp-2"

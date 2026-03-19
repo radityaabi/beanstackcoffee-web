@@ -13,6 +13,14 @@ import { useCart } from "@/modules/cart/hooks";
 import { useAuth } from "@/modules/auth/hooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 export function MainLayout() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -121,6 +129,43 @@ export function MainLayout() {
                     </Button>
                   </>
                 )}
+              </div>
+
+              {/* Mobile Auth */}
+              <div className="flex md:hidden border-l border-border pl-4 items-center">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="text-muted-foreground hover:text-primary transition outline-none">
+                      <UserCircleIcon weight="bold" className="w-6 h-6" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48 mt-2">
+                    {isAuthenticated ? (
+                      <>
+                        <DropdownMenuLabel className="font-normal">
+                          <span className="flex items-center gap-1.5 text-sm font-medium text-foreground">
+                            <UserCircleIcon className="w-4 h-4" />
+                            {user?.username}
+                          </span>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={logout} className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer">
+                          <SignOutIcon className="w-4 h-4 mr-2" />
+                          Logout
+                        </DropdownMenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <DropdownMenuItem asChild>
+                          <Link to="/login" className="cursor-pointer w-full text-foreground">Login</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/register" className="cursor-pointer w-full text-foreground">Register</Link>
+                        </DropdownMenuItem>
+                      </>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
           </div>
