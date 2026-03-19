@@ -44,28 +44,28 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
-      <Card className="max-w-md w-full shadow-xl overflow-hidden rounded-2xl">
-        <CardHeader className="text-center border-b border-border p-8">
+    <div className="bg-background flex min-h-screen flex-col items-center justify-center p-4">
+      <Card className="w-full max-w-md overflow-hidden rounded-2xl shadow-xl">
+        <CardHeader className="border-border border-b p-8 text-center">
           <Link
             to="/"
-            className="inline-flex justify-center items-center gap-2 text-foreground font-bold text-2xl mb-2 hover:text-primary transition-opacity"
+            className="text-foreground hover:text-primary mb-2 inline-flex items-center justify-center gap-2 text-2xl font-bold transition-opacity"
           >
-            <img src="/logo.svg" alt="Beanstack" className="w-8 h-8" />
+            <img src="/logo.svg" alt="Beanstack" className="h-8 w-8" />
             <span className="tracking-tight">Beanstack Coffee</span>
           </Link>
           <CardDescription className="text-sm">
-            Join us for the perfect cup
+            Mulailah petualangan kopi Anda dengan membuat akun baru.
           </CardDescription>
         </CardHeader>
 
         <CardContent className="p-8 pb-4">
-          <CardTitle className="text-2xl font-bold text-card-foreground mb-6 text-center">
-            Create Account
+          <CardTitle className="text-card-foreground mb-6 text-center text-2xl font-bold">
+            Daftar Akun Baru
           </CardTitle>
 
           {registerMutation.error && (
-            <div className="mb-6 p-4 text-destructive text-sm text-center">
+            <div className="text-destructive mb-6 p-4 text-center text-sm">
               {registerMutation.error.message}
             </div>
           )}
@@ -74,8 +74,8 @@ const Register = () => {
             <div className="space-y-1">
               <Label htmlFor="username">Username</Label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <UserIcon className="w-5 h-5 text-muted-foreground" />
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <UserIcon className="text-muted-foreground h-5 w-5" />
                 </div>
                 <Input
                   id="username"
@@ -83,17 +83,17 @@ const Register = () => {
                   required
                   value={state.username}
                   onChange={handleChange}
-                  className="pl-10 rounded-xl bg-white focus:bg-amber-50"
+                  className="rounded-xl bg-white pl-10 focus:bg-amber-50"
                   placeholder="your username"
                 />
               </div>
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="email">Alamat Email</Label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <EnvelopeSimpleIcon className="w-5 h-5 text-muted-foreground" />
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <EnvelopeSimpleIcon className="text-muted-foreground h-5 w-5" />
                 </div>
                 <Input
                   id="email"
@@ -101,7 +101,7 @@ const Register = () => {
                   required
                   value={state.email}
                   onChange={handleChange}
-                  className="pl-10 rounded-xl bg-white focus:bg-amber-50"
+                  className="rounded-xl bg-white pl-10 focus:bg-amber-50"
                   placeholder="you@example.com"
                 />
               </div>
@@ -110,8 +110,8 @@ const Register = () => {
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <LockKeyIcon className="w-5 h-5 text-muted-foreground" />
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <LockKeyIcon className="text-muted-foreground h-5 w-5" />
                 </div>
                 <Input
                   id="password"
@@ -120,7 +120,7 @@ const Register = () => {
                   minLength={8}
                   value={state.password}
                   onChange={handleChange}
-                  className="pl-10 pr-10 rounded-xl bg-white focus:bg-amber-50"
+                  className="rounded-xl bg-white pr-10 pl-10 focus:bg-amber-50"
                   placeholder="••••••••"
                 />
                 <button
@@ -131,41 +131,40 @@ const Register = () => {
                       showPassword: !prev.showPassword,
                     }))
                   }
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground absolute inset-y-0 right-0 flex items-center pr-3"
                 >
                   {state.showPassword ? (
-                    <EyeSlashIcon className="w-5 h-5" />
+                    <EyeSlashIcon className="h-5 w-5" />
                   ) : (
-                    <EyeIcon className="w-5 h-5" />
+                    <EyeIcon className="h-5 w-5" />
                   )}
                 </button>
               </div>
-              <p className="mt-1 pb-1 text-xs text-muted-foreground">
-                Min 8 chars, includes uppercase, lowercase & number
+              <p className="text-muted-foreground mt-1 pb-1 text-xs">
+                Minimal 8 karakter, gunakan kombinasi 1 huruf besar, huruf kecil
+                dan angka.
               </p>
             </div>
 
             <Button
               type="submit"
               disabled={registerMutation.isPending}
-              className="w-full mt-4 rounded-xl"
+              className="mt-4 w-full rounded-xl"
               size="lg"
             >
-              {registerMutation.isPending
-                ? "Creating Account..."
-                : "Create Account"}
+              {registerMutation.isPending ? "Buat Akun..." : "Buat Akun"}
             </Button>
           </form>
         </CardContent>
 
-        <CardFooter className="justify-center pb-8 pt-2">
-          <div className="text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
+        <CardFooter className="justify-center pt-2 pb-8">
+          <div className="text-muted-foreground text-center text-sm">
+            Sudah punya akun?{" "}
             <Link
               to="/login"
-              className="text-primary font-semibold hover:text-primary/90 hover:underline"
+              className="text-primary hover:text-primary/90 font-semibold hover:underline"
             >
-              Sign In
+              Masuk di sini
             </Link>
           </div>
         </CardFooter>

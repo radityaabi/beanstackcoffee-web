@@ -9,10 +9,11 @@ import {
 import { useProduct } from "@/modules/product/hooks";
 import { useAddToCart } from "@/modules/cart/hooks";
 import { useAuth } from "@/modules/auth/hooks";
-import { formatRupiah } from "@/lib/utils";
+import { formatRupiah, getPreviewUrl } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -21,7 +22,12 @@ export default function ProductDetail() {
   const { isAuthenticated } = useAuth();
 
   const [quantity, setQuantity] = useState(1);
-  const [addedMessage, setAddedMessage] = useState("");
+  const [notification, setNotification] = useState<{
+    message: string;
+    isError: boolean;
+  } | null>(null);
+
+  const clearNotification = () => setTimeout(() => setNotification(null), 3000);
 
   const navigate = useNavigate();
 
@@ -41,12 +47,30 @@ export default function ProductDetail() {
         { productId: product.id, quantity },
         {
           onSuccess: () => {
-            setAddedMessage("Berhasil ditambahkan ke keranjang!");
+            setNotification({
+              message: "Berhasil ditambahkan ke keranjang!",
+              isError: false,
+            });
             setQuantity(1);
-            setTimeout(() => setAddedMessage(""), 3000);
+            clearNotification();
           },
           onError: () => {
-            navigate("/login");
+            if (
+              error instanceof Error &&
+              error.message.includes("Unauthorized")
+            ) {
+              navigate("/login", {
+                state: {
+                  message: "Sesi Anda telah habis. Silakan login kembali.",
+                },
+              });
+            } else {
+              setNotification({
+                message: "Gagal menambahkan ke keranjang.",
+                isError: true,
+              });
+              clearNotification();
+            }
           },
         },
       );
@@ -55,22 +79,22 @@ export default function ProductDetail() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center flex-col items-center grow py-32">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-        <p className="text-muted-foreground">Memuat detail produk...</p>
+      <div className="flex grow flex-col items-center justify-center gap-3 py-32">
+        <Spinner className="text-primary size-8" />
+        <p className="text-muted-foreground text-sm">Memuat detail produk...</p>
       </div>
     );
   }
 
   if (error || !product) {
     return (
-      <div className="flex justify-center flex-col items-center grow py-32">
-        <h2 className="text-2xl font-bold text-foreground mb-4">
+      <div className="flex grow flex-col items-center justify-center py-32">
+        <h2 className="text-foreground mb-4 text-2xl font-bold">
           Produk Tidak Ditemukan
         </h2>
         <Link
           to="/products"
-          className="text-primary hover:underline flex items-center gap-2"
+          className="text-primary flex items-center gap-2 hover:underline"
         >
           <CaretLeftIcon weight="bold" /> Kembali ke Daftar Produk
         </Link>
@@ -79,51 +103,52 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <Button
         variant="ghost"
         asChild
-        className="mb-8 -ml-4 text-muted-foreground hover:text-primary group"
+        className="text-muted-foreground hover:text-primary group mb-8 -ml-4"
       >
         <Link to="/products">
           <CaretLeftIcon
             weight="bold"
-            className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform"
+            className="mr-1 h-4 w-4 transition-transform group-hover:-translate-x-1"
           />
           Kembali ke Produk
         </Link>
       </Button>
 
-      <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
+      <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
         <div className="flex flex-col md:flex-row">
           {/* Product Image */}
-          <div className="md:w-1/2 p-8 md:p-12 flex items-center justify-center bg-background border-b md:border-b-0 md:border-r border-border min-h-100">
+          <div className="bg-background border-border flex h-120 items-center justify-center overflow-hidden border-b md:h-auto md:w-1/2 md:border-r md:border-b-0">
             <img
-              src={
+              src={getPreviewUrl(
                 product.imageUrl ||
-                "https://2xm7hdufl9.ucarecd.net/3cd44a25-d8fc-4d52-a977-fc566af061c2/-/scale_crop/600x600/"
-              }
+                  "https://2xm7hdufl9.ucarecdn.net/3cd44a25-d8fc-4d52-a977-fc566af061c2/",
+                "700x700",
+              )}
               alt={product.name}
-              className="max-h-100 object-contain hover:scale-105 transition duration-500"
+              className="h-full w-full object-contain transition duration-500 hover:scale-105"
             />
           </div>
 
           {/* Product Info */}
-          <div className="md:w-1/2 p-8 md:p-12 flex flex-col">
+          <div className="flex flex-col p-8 md:w-1/2 md:p-12">
             <div className="mb-2">
               <Badge
                 variant="secondary"
-                className="px-3 py-1 uppercase tracking-wider text-primary font-bold"
+                className="text-primary px-3 py-1 font-bold tracking-wider uppercase"
               >
                 {product.type}
               </Badge>
             </div>
 
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mt-4 mb-2">
+            <h1 className="text-foreground mt-4 mb-2 text-3xl font-bold md:text-4xl">
               {product.name}
             </h1>
 
-            <p className="text-xl font-semibold text-primary mb-6">
+            <p className="text-primary mb-6 text-xl font-semibold">
               {formatRupiah(product.price)}
             </p>
 
@@ -134,16 +159,16 @@ export default function ProductDetail() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-8 py-6 border-y border-border">
+            <div className="border-border mb-8 grid grid-cols-2 gap-4 border-y py-6">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Berat</p>
-                <p className="font-semibold text-foreground">
+                <p className="text-muted-foreground mb-1 text-sm">Berat</p>
+                <p className="text-foreground font-semibold">
                   {product.weight}g
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground mb-1">Stok</p>
-                <p className="font-semibold text-foreground">
+                <p className="text-muted-foreground mb-1 text-sm">Stok</p>
+                <p className="text-foreground font-semibold">
                   {product.stockQuantity > 0
                     ? `${product.stockQuantity} tersedia`
                     : "Habis"}
@@ -154,17 +179,17 @@ export default function ProductDetail() {
             <div className="mt-auto">
               {product.stockQuantity > 0 ? (
                 <div className="flex flex-row gap-4">
-                  <div className="flex items-center border border-border bg-background overflow-hidden rounded-md w-32 shrink-0">
+                  <div className="border-border bg-background flex w-32 shrink-0 items-center overflow-hidden rounded-md border">
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                      className="rounded-none rounded-l-md flex-1 h-12 hover:cursor-pointer hover:bg-muted/40"
+                      className="hover:bg-muted/40 h-12 flex-1 rounded-none rounded-l-md hover:cursor-pointer"
                       disabled={quantity <= 1 || isAdding}
                     >
-                      <MinusIcon weight="bold" className="w-4 h-4" />
+                      <MinusIcon weight="bold" className="h-4 w-4" />
                     </Button>
-                    <span className="w-10 text-center font-medium text-foreground">
+                    <span className="text-foreground w-10 text-center font-medium">
                       {quantity}
                     </span>
                     <Button
@@ -175,23 +200,23 @@ export default function ProductDetail() {
                         quantity < product.stockQuantity &&
                         setQuantity(quantity + 1)
                       }
-                      className="rounded-none rounded-r-md flex-1 h-12 hover:cursor-pointer hover:bg-muted/40"
+                      className="hover:bg-muted/40 h-12 flex-1 rounded-none rounded-r-md hover:cursor-pointer"
                       disabled={quantity >= product.stockQuantity || isAdding}
                     >
-                      <PlusIcon weight="bold" className="w-4 h-4" />
+                      <PlusIcon weight="bold" className="h-4 w-4" />
                     </Button>
                   </div>
                   <Button
                     size="lg"
                     onClick={handleAddToCart}
                     disabled={isAdding}
-                    className="flex-1 h-12 flex items-center justify-center gap-2 hover:cursor-pointer px-0 sm:px-8"
+                    className="flex h-12 flex-1 items-center justify-center gap-2 px-0 hover:cursor-pointer sm:px-8"
                     variant="default"
                   >
                     {isAdding ? (
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-background"></div>
+                      <div className="border-background h-5 w-5 animate-spin rounded-full border-b-2"></div>
                     ) : (
-                      <ShoppingCartIcon weight="bold" className="w-5 h-5" />
+                      <ShoppingCartIcon weight="bold" className="h-5 w-5" />
                     )}
                     <span className="hidden sm:inline">
                       {isAdding ? "Menambahkan..." : "Tambah ke Keranjang"}
@@ -203,7 +228,7 @@ export default function ProductDetail() {
                   disabled
                   size="lg"
                   variant="secondary"
-                  className="w-full h-12"
+                  className="h-12 w-full"
                 >
                   Stok Habis
                 </Button>
@@ -211,9 +236,15 @@ export default function ProductDetail() {
             </div>
 
             {/* Success Message Banner */}
-            {addedMessage && (
-              <div className="mt-4 p-3 text-chart-4 rounded-md text-sm text-center animate-in fade-in slide-in-from-bottom-2">
-                {addedMessage}
+            {notification && (
+              <div
+                className={`animate-in fade-in slide-in-from-bottom-2 mt-4 rounded-md p-3 text-center text-sm ${
+                  notification.isError
+                    ? "bg-destructive/10 text-destructive"
+                    : "text-chart-4"
+                }`}
+              >
+                {notification.message}
               </div>
             )}
           </div>

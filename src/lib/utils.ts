@@ -13,3 +13,9 @@ export function formatRupiah(number: number): string {
     maximumFractionDigits: 0,
   }).format(number);
 }
+
+export const getPreviewUrl = (url: string, size: string) => {
+  if (!url) return url;
+  const base = url.endsWith("/") ? url : `${url}/`;
+  return `${base}-/preview/${size}/`;
+};
