@@ -22,21 +22,25 @@ import {
 
 const Register = () => {
   const registerMutation = useRegister();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [formData, setFormData] = useState({
+  const [state, setState] = useState({
     username: "",
     email: "",
     password: "",
+    showPassword: false,
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, [event.target.id]: event.target.value }));
+    const { id, value } = event.target;
+    setState((previous) => ({ ...previous, [id]: value }));
   };
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    registerMutation.mutate(formData);
+    registerMutation.mutate({
+      username: state.username,
+      email: state.email,
+      password: state.password,
+    });
   };
 
   return (
@@ -77,7 +81,7 @@ const Register = () => {
                   id="username"
                   type="text"
                   required
-                  value={formData.username}
+                  value={state.username}
                   onChange={handleChange}
                   className="pl-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="your username"
@@ -95,7 +99,7 @@ const Register = () => {
                   id="email"
                   type="email"
                   required
-                  value={formData.email}
+                  value={state.email}
                   onChange={handleChange}
                   className="pl-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="you@example.com"
@@ -111,20 +115,25 @@ const Register = () => {
                 </div>
                 <Input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type={state.showPassword ? "text" : "password"}
                   required
                   minLength={8}
-                  value={formData.password}
+                  value={state.password}
                   onChange={handleChange}
                   className="pl-10 pr-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() =>
+                    setState((prev) => ({
+                      ...prev,
+                      showPassword: !prev.showPassword,
+                    }))
+                  }
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground"
                 >
-                  {showPassword ? (
+                  {state.showPassword ? (
                     <EyeSlashIcon className="w-5 h-5" />
                   ) : (
                     <EyeIcon className="w-5 h-5" />

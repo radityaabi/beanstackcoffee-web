@@ -24,9 +24,16 @@ const Login = () => {
   const location = useLocation();
   const successMessage = (location.state as { message?: string })?.message;
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+    showPassword: false,
+  });
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = event.target;
+    setState((prev) => ({ ...prev, [id]: value }));
+  };
 
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
@@ -62,9 +69,12 @@ const Login = () => {
           )}
 
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              loginMutation.mutate({ email, password });
+            onSubmit={(event) => {
+              event.preventDefault();
+              loginMutation.mutate({
+                email: state.email,
+                password: state.password,
+              });
             }}
             className="space-y-4"
           >
@@ -78,8 +88,8 @@ const Login = () => {
                   id="email"
                   type="email"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={state.email}
+                  onChange={handleInputChange}
                   className="pl-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="you@example.com"
                 />
@@ -94,19 +104,24 @@ const Login = () => {
                 </div>
                 <Input
                   id="password"
-                  type={showPassword ? "text" : "password"}
+                  type={state.showPassword ? "text" : "password"}
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={state.password}
+                  onChange={handleInputChange}
                   className="pl-10 pr-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() =>
+                    setState((prev) => ({
+                      ...prev,
+                      showPassword: !prev.showPassword,
+                    }))
+                  }
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground"
                 >
-                  {showPassword ? (
+                  {state.showPassword ? (
                     <EyeSlashIcon className="w-5 h-5" />
                   ) : (
                     <EyeIcon className="w-5 h-5" />
