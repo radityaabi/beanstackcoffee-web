@@ -1,11 +1,9 @@
 import React, {
   createContext,
   useContext,
-  useEffect,
-  useRef,
-  useState,
   useCallback,
 } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchClient } from "../common/api";
 import type { components } from "@/schema";
 
@@ -28,65 +26,46 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const isFetchingMe = useRef(false);
+  const queryClient = useQueryClient();
+  const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
-  const fetchMe = useCallback(async () => {
-    if (isFetchingMe.current) return;
-    isFetchingMe.current = true;
-    try {
+  const { data: user, isLoading: isQueryLoading, isFetching } = useQuery({
+    queryKey: ["auth", "me"],
+    queryFn: async () => {
       const { data } = await fetchClient.GET("/auth/me");
-      setUser(data ?? null);
-    } catch {
-      setUser(null);
-    } finally {
-      setIsLoading(false);
-      isFetchingMe.current = false;
-    }
-  }, []);
-
-  // Restore session if a token exists in localStorage
-  useEffect(() => {
-    if (localStorage.getItem("accessToken")) {
-      fetchMe();
-    } else {
-      setIsLoading(false);
-    }
-  }, [fetchMe]);
+      return data ?? null;
+    },
+    enabled: !!token,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
 
   const logout = useCallback(() => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    setUser(null);
-
+    queryClient.setQueryData(["auth", "me"], null);
     fetchClient.POST("/auth/logout").catch(() => {});
-  }, []);
-
-  // Listen for 401 events dispatched by the fetch interceptor
-  useEffect(() => {
-    window.addEventListener("auth-unauthorized", logout);
-    return () => window.removeEventListener("auth-unauthorized", logout);
-  }, [logout]);
+    if (window.location.pathname !== "/login") window.location.href = "/login";
+  }, [queryClient]);
 
   const setTokens = useCallback(
     (accessToken: string, refreshToken: string, userData?: AuthUser) => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       if (userData) {
-        setUser(userData);
-        setIsLoading(false);
+        queryClient.setQueryData(["auth", "me"], userData);
       } else {
-        setIsLoading(true);
-        fetchMe();
+        queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
       }
     },
-    [fetchMe],
+    [queryClient],
   );
+
+  const isLoading = token ? (isQueryLoading || isFetching) : false;
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated: !!user, isLoading, setTokens, logout }}
+      value={{ user: user || null, isAuthenticated: !!user, isLoading, setTokens, logout }}
     >
       {children}
     </AuthContext.Provider>

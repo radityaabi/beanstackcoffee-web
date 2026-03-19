@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   ShoppingCartIcon,
@@ -25,15 +25,6 @@ export default function ProductDetail() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (addedMessage) {
-      const timer = setTimeout(() => {
-        setAddedMessage("");
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [addedMessage]);
-
   const handleAddToCart = () => {
     if (!isAuthenticated) {
       navigate("/login", {
@@ -52,6 +43,7 @@ export default function ProductDetail() {
           onSuccess: () => {
             setAddedMessage("Berhasil ditambahkan ke keranjang!");
             setQuantity(1);
+            setTimeout(() => setAddedMessage(""), 3000);
           },
           onError: () => {
             navigate("/login");
