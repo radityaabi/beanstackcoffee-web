@@ -154,20 +154,20 @@ export const useProductFilters = () => {
   }
 
   const handleSliderChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       dispatch({
         type: "SET_SLIDER",
-        name: e.target.name as keyof SliderState,
-        value: parseInt(e.target.value, 10),
+        name: event.target.name as keyof SliderState,
+        value: parseInt(event.target.value, 10),
       });
     },
     [],
   );
 
   const handleApplyFilter = useCallback(
-    (e: React.ChangeEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const formData = new FormData(e.currentTarget);
+    (event: React.ChangeEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
       const newParams = new URLSearchParams();
 
       const searchVal = searchParams.get("search");

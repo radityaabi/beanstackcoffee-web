@@ -21,7 +21,7 @@ export const useLogin = () => {
       });
 
       if (error) {
-        const message = (error as { message?: string })?.message;
+        const message = (error as { error?: string })?.error;
         throw new Error(message || "Invalid email or password");
       }
 
@@ -44,7 +44,23 @@ export const useRegister = () => {
       });
 
       if (error) {
-        const message = (error as { message?: string })?.message;
+        let message =
+          (error as { message?: string })?.message ||
+          (error as { error?: string })?.error;
+
+        const typedError = error as {
+          details?: Array<{ message?: string }> | { message?: string };
+        };
+
+        if (
+          Array.isArray(typedError.details) &&
+          typedError.details.length > 0
+        ) {
+          message = typedError.details[0]?.message;
+        } else if (typedError.details && !Array.isArray(typedError.details)) {
+          message = typedError.details.message || message;
+        }
+
         throw new Error(message || "Username or email already exists");
       }
 

@@ -1,5 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import { EnvelopeSimpleIcon, LockKeyIcon } from "@phosphor-icons/react";
+import {
+  EnvelopeSimpleIcon,
+  LockKeyIcon,
+  EyeSlashIcon,
+  EyeIcon,
+} from "@phosphor-icons/react";
 import { useLogin } from "@/modules/auth/hooks";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -21,6 +26,7 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
@@ -44,13 +50,13 @@ const Login = () => {
           </CardTitle>
 
           {successMessage && (
-            <div className="mb-2 p-4 rounded-xl text-green-600 text-sm text-center">
+            <div className="mb-2 p-4 text-green-600 text-sm text-center">
               {successMessage}
             </div>
           )}
 
           {loginMutation.error && (
-            <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-xl text-destructive text-sm text-center">
+            <div className="mb-6 p-4 text-destructive text-sm text-center">
               {loginMutation.error.message}
             </div>
           )}
@@ -88,13 +94,24 @@ const Login = () => {
                 </div>
                 <Input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 rounded-xl bg-white focus:bg-amber-50"
+                  className="pl-10 pr-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="w-5 h-5" />
+                  ) : (
+                    <EyeIcon className="w-5 h-5" />
+                  )}
+                </button>
               </div>
             </div>
 

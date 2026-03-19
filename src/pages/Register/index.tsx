@@ -3,6 +3,8 @@ import {
   EnvelopeSimpleIcon,
   LockKeyIcon,
   UserIcon,
+  EyeSlashIcon,
+  EyeIcon,
 } from "@phosphor-icons/react";
 import { useRegister } from "@/modules/auth/hooks";
 import { useState } from "react";
@@ -20,6 +22,7 @@ import {
 
 const Register = () => {
   const registerMutation = useRegister();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -27,12 +30,12 @@ const Register = () => {
     password: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, [event.target.id]: event.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
     registerMutation.mutate(formData);
   };
 
@@ -58,7 +61,7 @@ const Register = () => {
           </CardTitle>
 
           {registerMutation.error && (
-            <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-xl text-destructive text-sm text-center">
+            <div className="mb-6 p-4 text-destructive text-sm text-center">
               {registerMutation.error.message}
             </div>
           )}
@@ -77,7 +80,7 @@ const Register = () => {
                   value={formData.username}
                   onChange={handleChange}
                   className="pl-10 rounded-xl bg-white focus:bg-amber-50"
-                  placeholder="johndoe123"
+                  placeholder="your username"
                 />
               </div>
             </div>
@@ -108,14 +111,25 @@ const Register = () => {
                 </div>
                 <Input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   minLength={8}
                   value={formData.password}
                   onChange={handleChange}
-                  className="pl-10 rounded-xl bg-white focus:bg-amber-50"
+                  className="pl-10 pr-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="w-5 h-5" />
+                  ) : (
+                    <EyeIcon className="w-5 h-5" />
+                  )}
+                </button>
               </div>
               <p className="mt-1 pb-1 text-xs text-muted-foreground">
                 Min 8 chars, includes uppercase, lowercase & number
