@@ -164,7 +164,7 @@ export function ProductFilterPanel() {
                   value={sliders.weightMin}
                   step="50"
                   onChange={handleSliderChange}
-                  className="absolute w-full -top-[5px] appearance-none bg-transparent pointer-events-none custom-slider"
+                  className="absolute w-full -top-1.25 appearance-none bg-transparent pointer-events-none custom-slider"
                 />
                 <input
                   type="range"
@@ -174,7 +174,7 @@ export function ProductFilterPanel() {
                   value={sliders.weightMax}
                   step="50"
                   onChange={handleSliderChange}
-                  className="absolute w-full -top-[5px] appearance-none bg-transparent pointer-events-none custom-slider"
+                  className="absolute w-full -top-1.25 appearance-none bg-transparent pointer-events-none custom-slider"
                 />
               </div>
             </div>
@@ -217,7 +217,7 @@ export function ProductFilterPanel() {
                   value={sliders.priceMin}
                   step="5000"
                   onChange={handleSliderChange}
-                  className="absolute w-full -top-[5px] appearance-none bg-transparent pointer-events-none custom-slider"
+                  className="absolute w-full -top-1.25 appearance-none bg-transparent pointer-events-none custom-slider"
                 />
                 <input
                   type="range"
@@ -227,7 +227,7 @@ export function ProductFilterPanel() {
                   value={sliders.priceMax}
                   step="5000"
                   onChange={handleSliderChange}
-                  className="absolute w-full -top-[5px] appearance-none bg-transparent pointer-events-none custom-slider"
+                  className="absolute w-full -top-1.25 appearance-none bg-transparent pointer-events-none custom-slider"
                 />
               </div>
             </div>

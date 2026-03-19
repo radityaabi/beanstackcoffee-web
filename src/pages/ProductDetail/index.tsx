@@ -105,14 +105,14 @@ export default function ProductDetail() {
       <div className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden">
         <div className="flex flex-col md:flex-row">
           {/* Product Image */}
-          <div className="md:w-1/2 p-8 md:p-12 flex items-center justify-center bg-background border-b md:border-b-0 md:border-r border-border min-h-[400px]">
+          <div className="md:w-1/2 p-8 md:p-12 flex items-center justify-center bg-background border-b md:border-b-0 md:border-r border-border min-h-100">
             <img
               src={
                 product.imageUrl ||
                 "https://2xm7hdufl9.ucarecd.net/3cd44a25-d8fc-4d52-a977-fc566af061c2/-/scale_crop/600x600/"
               }
               alt={product.name}
-              className="max-h-[400px] object-contain hover:scale-105 transition duration-500"
+              className="max-h-100 object-contain hover:scale-105 transition duration-500"
             />
           </div>
 
