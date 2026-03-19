@@ -39,12 +39,12 @@ const Login = () => {
         </CardHeader>
 
         <CardContent className="p-8 pb-4">
-          <CardTitle className="text-2xl font-bold text-card-foreground mb-6 text-center">
+          <CardTitle className="text-2xl font-bold text-card-foreground mb-3 text-center">
             Sign In
           </CardTitle>
 
           {successMessage && (
-            <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-600 text-sm text-center">
+            <div className="mb-2 p-4 rounded-xl text-green-600 text-sm text-center">
               {successMessage}
             </div>
           )}

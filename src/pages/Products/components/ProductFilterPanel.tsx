@@ -234,10 +234,14 @@ export function ProductFilterPanel() {
           </div>
 
           <div className="pt-4 border-t border-border flex flex-col gap-2">
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full cursor-pointer">
               Terapkan Filter
             </Button>
-            <Button type="reset" variant="outline" className="w-full">
+            <Button
+              type="reset"
+              variant="outline"
+              className="w-full cursor-pointer"
+            >
               Reset
             </Button>
           </div>

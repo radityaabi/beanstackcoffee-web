@@ -219,7 +219,7 @@ export default function ProductDetail() {
 
             {/* Success Message Banner */}
             {addedMessage && (
-              <div className="mt-4 p-3 bg-primary/10 border border-primary text-primary rounded-md text-sm text-center animate-in fade-in slide-in-from-bottom-2">
+              <div className="mt-4 p-3 text-emerald-600 rounded-md text-sm text-center animate-in fade-in slide-in-from-bottom-2">
                 {addedMessage}
               </div>
             )}
