@@ -1,7 +1,4 @@
-import {
-  FunnelIcon,
-  CaretRightIcon,
-} from "@phosphor-icons/react";
+import { FunnelIcon, CaretRightIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { useProductFilters } from "@/modules/product/hooks";
 import type { components } from "@/schema";
@@ -19,6 +16,9 @@ export function ProductFilterPanel() {
     handleApplyFilter,
     handleResetFilter,
   } = useProductFilters();
+
+  const maxPrice = 2000000;
+  const maxWeight = 2000;
 
   const typeFilter = searchParams.get("type") || "";
   const typeArray = typeFilter ? typeFilter.split(",") : [];
@@ -107,15 +107,15 @@ export function ProductFilterPanel() {
             <div className="flex flex-col space-y-4">
               <div className="flex items-center space-x-2">
                 <input
-                  type="number"
-                  value={sliders.wMin}
+                  type="text"
+                  value={sliders.wMin.toLocaleString("id-ID")}
                   readOnly
                   className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
                 />
                 <span className="text-muted-foreground">-</span>
                 <input
-                  type="number"
-                  value={sliders.wMax}
+                  type="text"
+                  value={sliders.wMax.toLocaleString("id-ID")}
                   readOnly
                   className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
                 />
@@ -124,15 +124,15 @@ export function ProductFilterPanel() {
                 <div
                   className="absolute h-1.5 bg-primary rounded-full transition-all"
                   style={{
-                    left: `${(sliders.wMin / 2000) * 100}%`,
-                    right: `${100 - (sliders.wMax / 2000) * 100}%`,
+                    left: `${(sliders.wMin / maxWeight) * 100}%`,
+                    right: `${100 - (sliders.wMax / maxWeight) * 100}%`,
                   }}
                 />
                 <input
                   type="range"
                   name="wMin"
                   min="0"
-                  max="2000"
+                  max={maxWeight}
                   value={sliders.wMin}
                   step="50"
                   onChange={handleSliderChange}
@@ -142,7 +142,7 @@ export function ProductFilterPanel() {
                   type="range"
                   name="wMax"
                   min="0"
-                  max="2000"
+                  max={maxWeight}
                   value={sliders.wMax}
                   step="50"
                   onChange={handleSliderChange}
@@ -160,15 +160,15 @@ export function ProductFilterPanel() {
             <div className="flex flex-col space-y-4">
               <div className="flex items-center space-x-2">
                 <input
-                  type="number"
-                  value={sliders.pMin}
+                  type="text"
+                  value={sliders.pMin.toLocaleString("id-ID")}
                   readOnly
                   className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
                 />
                 <span className="text-muted-foreground">-</span>
                 <input
-                  type="number"
-                  value={sliders.pMax}
+                  type="text"
+                  value={sliders.pMax.toLocaleString("id-ID")}
                   readOnly
                   className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
                 />
@@ -177,15 +177,15 @@ export function ProductFilterPanel() {
                 <div
                   className="absolute h-1.5 bg-primary rounded-full transition-all"
                   style={{
-                    left: `${(sliders.pMin / 500000) * 100}%`,
-                    right: `${100 - (sliders.pMax / 500000) * 100}%`,
+                    left: `${(sliders.pMin / maxPrice) * 100}%`,
+                    right: `${100 - (sliders.pMax / maxPrice) * 100}%`,
                   }}
                 />
                 <input
                   type="range"
                   name="pMin"
                   min="0"
-                  max="500000"
+                  max={maxPrice}
                   value={sliders.pMin}
                   step="5000"
                   onChange={handleSliderChange}
@@ -195,7 +195,7 @@ export function ProductFilterPanel() {
                   type="range"
                   name="pMax"
                   min="0"
-                  max="500000"
+                  max={maxPrice}
                   value={sliders.pMax}
                   step="5000"
                   onChange={handleSliderChange}

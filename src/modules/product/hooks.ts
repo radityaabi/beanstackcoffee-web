@@ -68,7 +68,7 @@ const SLIDER_DEFAULTS = {
   wMin: 0,
   wMax: 2000,
   pMin: 0,
-  pMax: 500000,
+  pMax: 2000000,
 } as const;
 
 type SliderState = { wMin: number; wMax: number; pMin: number; pMax: number };
@@ -78,7 +78,7 @@ function parseSlidersFromParams(params: URLSearchParams): SliderState {
     wMin: parseInt(params.get("minWeight") || "0", 10),
     wMax: parseInt(params.get("maxWeight") || "2000", 10),
     pMin: parseInt(params.get("minPrice") || "0", 10),
-    pMax: parseInt(params.get("maxPrice") || "500000", 10),
+    pMax: parseInt(params.get("maxPrice") || "2000000", 10),
   };
 }
 
