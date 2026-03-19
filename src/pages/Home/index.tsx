@@ -72,7 +72,7 @@ export default function Home() {
                   />
                   <Badge
                     variant="secondary"
-                    className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 text-[10px] sm:text-xs font-bold bg-card/90 backdrop-blur-sm shadow-sm uppercase pointer-events-none"
+                    className="absolute top-2 left-2 text-primary sm:top-3 sm:left-3 z-10 text-[10px] sm:text-xs font-bold bg-card/90 backdrop-blur-sm shadow-sm uppercase pointer-events-none"
                   >
                     {product.type}
                   </Badge>

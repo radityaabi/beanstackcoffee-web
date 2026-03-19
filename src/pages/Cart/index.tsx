@@ -37,7 +37,7 @@ export default function Cart() {
   const totalAmount = cart?.totalPrice ?? 0;
 
   const handleUpdateQuantity = (id: string, newQuantity: number) => {
-    if (newQuantity < 1) return;
+    if (newQuantity < 1) return setItemToDelete(id);
     updateItem({ id, payload: { quantity: newQuantity } });
   };
 
@@ -145,7 +145,6 @@ export default function Cart() {
                             handleUpdateQuantity(item.id, item.quantity - 1)
                           }
                           className="h-9 w-9 rounded-none"
-                          disabled={item.quantity <= 1}
                         >
                           <MinusIcon className="w-3 h-3" />
                         </Button>

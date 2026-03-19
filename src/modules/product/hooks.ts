@@ -154,10 +154,11 @@ export const useProductFilters = () => {
       const searchVal = searchParams.get("search");
       if (searchVal) newParams.set("search", searchVal);
 
-      const sort = formData.get("sort_name") as string;
+      const sort = formData.get("sort") as string;
       if (sort) {
-        newParams.set("sortBy", "name");
-        newParams.set("sortOrder", sort);
+        const [sortBy, sortOrder] = sort.split("-");
+        if (sortBy) newParams.set("sortBy", sortBy);
+        if (sortOrder) newParams.set("sortOrder", sortOrder);
       }
 
       const types = formData.getAll("type") as string[];

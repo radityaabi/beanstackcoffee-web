@@ -63,7 +63,7 @@ export function MainLayout() {
                   name="search"
                   defaultValue={searchQuery}
                   placeholder="Cari biji kopi (misal: Gayo)..."
-                  className="w-full pl-4 pr-10 rounded-full"
+                  className="w-full pl-4 pr-10 rounded-full bg-white"
                 />
                 <button
                   type="submit"

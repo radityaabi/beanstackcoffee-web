@@ -22,7 +22,6 @@ export function ProductFilterPanel() {
 
   const typeFilter = searchParams.get("type") || "";
   const typeArray = typeFilter ? typeFilter.split(",") : [];
-  const sortOrderParam = searchParams.get("sortOrder") || "";
 
   return (
     <div className="w-full md:w-64 shrink-0">
@@ -57,19 +56,25 @@ export function ProductFilterPanel() {
             </h2>
           </div>
 
-          {/* Urutkan Nama */}
+          {/* Urutkan Berdasarkan */}
           <div>
             <h3 className="font-medium mb-3 text-sm text-foreground">
-              Urutkan Nama
+              Urutkan Berdasarkan
             </h3>
             <select
-              name="sort_name"
-              defaultValue={sortOrderParam}
+              name="sort"
+              defaultValue={
+                searchParams.get("sortBy")
+                  ? `${searchParams.get("sortBy")}-${searchParams.get("sortOrder")}`
+                  : ""
+              }
               className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground cursor-pointer"
             >
               <option value="">Paling Relevan</option>
-              <option value="asc">A - Z</option>
-              <option value="desc">Z - A</option>
+              <option value="name-asc">Nama: A - Z</option>
+              <option value="name-desc">Nama: Z - A</option>
+              <option value="price-asc">Harga: Termurah</option>
+              <option value="price-desc">Harga: Termahal</option>
             </select>
           </div>
 
