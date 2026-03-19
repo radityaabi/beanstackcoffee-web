@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 import { ArrowRightIcon, ShoppingCartIcon } from "@phosphor-icons/react";
-import { useProducts } from "@/modules/products/hooks";
+import { useProducts } from "@/modules/product/hooks";
 import { formatRupiah } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
   const { data: responseData, isLoading } = useProducts({ limit: "4" });
-  const productList = Array.isArray(responseData?.data) ? responseData.data : [];
+  const productList = Array.isArray(responseData?.data)
+    ? responseData.data
+    : [];
 
   return (
     <>
@@ -24,12 +28,9 @@ export default function Home() {
               kami. Di-roast dengan sempurna untuk pengalaman ngopi terbaik
               Anda.
             </p>
-            <Link
-              to="/products"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-md text-lg font-medium transition inline-block shadow-sm"
-            >
-              Beli Sekarang
-            </Link>
+            <Button asChild size="lg" className="text-lg px-8 h-14">
+              <Link to="/products">Beli Sekarang</Link>
+            </Button>
           </div>
           <div className="md:w-1/2">
             <img
@@ -65,12 +66,16 @@ export default function Home() {
                       product.imageUrl ||
                       "https://2xm7hdufl9.ucarecd.net/3cd44a25-d8fc-4d52-a977-fc566af061c2/-/scale_crop/300x300/"
                     }
+                    loading="lazy"
                     alt={product.name}
                     className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300"
                   />
-                  <span className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 text-[10px] sm:text-xs font-bold text-primary bg-card/90 backdrop-blur-sm px-2 py-1 rounded shadow-sm uppercase">
+                  <Badge
+                    variant="secondary"
+                    className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 text-[10px] sm:text-xs font-bold bg-card/90 backdrop-blur-sm shadow-sm uppercase pointer-events-none"
+                  >
                     {product.type}
-                  </span>
+                  </Badge>
                 </div>
                 <div className="p-3 sm:p-4 flex flex-col grow">
                   <h3 className="font-semibold text-xs sm:text-sm text-foreground line-clamp-2">
@@ -83,9 +88,16 @@ export default function Home() {
                     <p className="font-bold text-sm sm:text-base text-primary">
                       {formatRupiah(product.price)}
                     </p>
-                    <button className="text-primary bg-card hover:bg-accent p-1.5 sm:p-2 rounded-full transition shadow-sm">
-                      <ShoppingCartIcon weight="bold" className="w-4 h-4" />
-                    </button>
+                    <Button
+                      variant="secondary"
+                      size="icon"
+                      className="h-8 w-8 sm:h-9 sm:w-9 rounded-full shadow-sm"
+                    >
+                      <ShoppingCartIcon
+                        weight="bold"
+                        className="w-4 h-4 sm:w-5 sm:h-5"
+                      />
+                    </Button>
                   </div>
                 </div>
               </Link>
@@ -94,16 +106,15 @@ export default function Home() {
         )}
 
         <div className="text-center mt-10">
-          <Link
-            to="/products"
-            className="text-primary font-medium hover:text-primary/80 transition inline-flex items-center gap-1 group"
-          >
-            Lihat Semua Produk
-            <ArrowRightIcon
-              weight="bold"
-              className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-            />
-          </Link>
+          <Button variant="link" asChild className="group">
+            <Link to="/products">
+              Lihat Semua Produk
+              <ArrowRightIcon
+                weight="bold"
+                className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+              />
+            </Link>
+          </Button>
         </div>
       </section>
     </>

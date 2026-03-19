@@ -2,6 +2,17 @@ import { Link, useLocation } from "react-router-dom";
 import { EnvelopeSimpleIcon, LockKeyIcon } from "@phosphor-icons/react";
 import { useLogin } from "@/modules/auth/hooks";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 
 const Login = () => {
   const loginMutation = useLogin();
@@ -14,24 +25,24 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
-      <div className="max-w-md w-full bg-card rounded-2xl shadow-xl overflow-hidden border border-border">
-        <div className="bg-card border-b border-border p-8 text-center">
+      <Card className="max-w-md w-full shadow-xl overflow-hidden rounded-2xl">
+        <CardHeader className="text-center border-b border-border p-8">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-foreground font-bold text-2xl mb-2 hover:text-primary transition-opacity"
+            className="inline-flex justify-center items-center gap-2 text-foreground font-bold text-2xl mb-2 hover:text-primary transition-opacity"
           >
             <img src="/logo.svg" alt="Beanstack" className="w-8 h-8" />
             <span className="tracking-tight">Beanstack Coffee</span>
           </Link>
-          <p className="text-muted-foreground text-sm">
+          <CardDescription className="text-sm">
             Welcome back to your daily brew
-          </p>
-        </div>
+          </CardDescription>
+        </CardHeader>
 
-        <div className="p-8">
-          <h2 className="text-2xl font-bold text-card-foreground mb-6 text-center">
+        <CardContent className="p-8 pb-4">
+          <CardTitle className="text-2xl font-bold text-card-foreground mb-6 text-center">
             Sign In
-          </h2>
+          </CardTitle>
 
           {successMessage && (
             <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-600 text-sm text-center">
@@ -52,62 +63,55 @@ const Login = () => {
             }}
             className="space-y-4"
           >
-            <div>
-              <label
-                className="block text-sm font-medium text-foreground mb-1"
-                htmlFor="email"
-              >
-                Email Address
-              </label>
+            <div className="space-y-1">
+              <Label htmlFor="email">Email Address</Label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <EnvelopeSimpleIcon className="w-5 h-5 text-muted-foreground" />
                 </div>
-                <input
+                <Input
                   id="email"
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-input rounded-xl focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground transition-colors"
+                  className="pl-10 rounded-xl"
                   placeholder="you@example.com"
                 />
               </div>
             </div>
 
-            <div>
-              <label
-                className="block text-sm font-medium text-foreground mb-1"
-                htmlFor="password"
-              >
-                Password
-              </label>
+            <div className="space-y-1">
+              <Label htmlFor="password">Password</Label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <LockKeyIcon className="w-5 h-5 text-muted-foreground" />
                 </div>
-                <input
+                <Input
                   id="password"
                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-input rounded-xl focus:ring-2 focus:ring-primary focus:border-primary bg-background text-foreground transition-colors"
+                  className="pl-10 rounded-xl"
                   placeholder="••••••••"
                 />
               </div>
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={loginMutation.isPending}
-              className="w-full bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-all disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+              className="w-full mt-4 rounded-xl"
+              size="lg"
             >
               {loginMutation.isPending ? "Signing in..." : "Sign In"}
-            </button>
+            </Button>
           </form>
+        </CardContent>
 
-          <div className="mt-8 text-center text-sm text-muted-foreground">
+        <CardFooter className="justify-center pb-8 pt-2">
+          <div className="text-center text-sm text-muted-foreground">
             Don't have an account?{" "}
             <Link
               to="/register"
@@ -116,8 +120,8 @@ const Login = () => {
               Create an account
             </Link>
           </div>
-        </div>
-      </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

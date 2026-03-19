@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   TrashIcon,
@@ -11,12 +12,27 @@ import {
   useRemoveFromCart,
   useUpdateCartItem,
 } from "@/modules/cart/hooks";
+import { useAuth } from "@/modules/auth/hooks";
 import { formatRupiah } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
 export default function Cart() {
-  const { data: cart, isLoading, error } = useCart();
+  const { isAuthenticated } = useAuth();
+  const { data: cart, isLoading, error } = useCart(isAuthenticated);
   const { mutate: updateItem } = useUpdateCartItem();
   const { mutate: removeItem } = useRemoveFromCart();
+
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const totalAmount = cart?.totalPrice ?? 0;
 
@@ -24,7 +40,6 @@ export default function Cart() {
     if (newQuantity < 1) return;
     updateItem({ id, payload: { quantity: newQuantity } });
   };
-
 
   if (isLoading) {
     return (
@@ -44,12 +59,9 @@ export default function Cart() {
         <p className="text-muted-foreground mb-6">
           Silakan coba lagi beberapa saat.
         </p>
-        <Link
-          to="/"
-          className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2 rounded-md font-medium transition"
-        >
-          Ke Beranda
-        </Link>
+        <Button asChild>
+          <Link to="/">Ke Beranda</Link>
+        </Button>
       </div>
     );
   }
@@ -58,16 +70,19 @@ export default function Cart() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-      <Link
-        to="/products"
-        className="inline-flex items-center text-muted-foreground hover:text-primary transition mb-8 group"
+      <Button
+        variant="ghost"
+        asChild
+        className="mb-8 -ml-4 text-muted-foreground hover:text-primary group"
       >
-        <CaretLeftIcon
-          weight="bold"
-          className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform"
-        />
-        Lanjutkan Belanja
-      </Link>
+        <Link to="/products">
+          <CaretLeftIcon
+            weight="bold"
+            className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform"
+          />
+          Lanjutkan Belanja
+        </Link>
+      </Button>
 
       <h1 className="text-3xl font-bold text-foreground mb-8">
         Keranjang Belanja
@@ -123,37 +138,43 @@ export default function Cart() {
 
                     <div className="col-span-2 flex md:justify-center items-center">
                       <div className="flex outline outline-border rounded-md bg-background overflow-hidden h-9">
-                        <button
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={() =>
                             handleUpdateQuantity(item.id, item.quantity - 1)
                           }
-                          className="px-2 text-muted-foreground hover:text-foreground hover:bg-muted transition"
+                          className="h-9 w-9 rounded-none"
                           disabled={item.quantity <= 1}
                         >
                           <MinusIcon className="w-3 h-3" />
-                        </button>
+                        </Button>
                         <span className="w-10 flex items-center justify-center text-sm font-medium">
                           {item.quantity}
                         </span>
-                        <button
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           onClick={() =>
                             handleUpdateQuantity(item.id, item.quantity + 1)
                           }
-                          className="px-2 text-muted-foreground hover:text-foreground hover:bg-muted transition"
+                          className="h-9 w-9 rounded-none"
                         >
                           <PlusIcon className="w-3 h-3" />
-                        </button>
+                        </Button>
                       </div>
                     </div>
 
                     <div className="col-span-1 text-right mt-2 md:mt-0 absolute md:static top-4 right-4">
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-muted-foreground hover:text-destructive p-2 rounded-full hover:bg-destructive/10 transition"
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setItemToDelete(item.id)}
+                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full"
                         title="Hapus item"
                       >
                         <TrashIcon className="w-5 h-5" />
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -186,9 +207,9 @@ export default function Cart() {
                 </div>
               </div>
 
-              <button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3 rounded-md font-medium transition shadow-sm mb-4">
+              <Button size="lg" className="w-full mb-4">
                 Lanjut ke Pembayaran
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -205,14 +226,47 @@ export default function Cart() {
             Sepertinya Anda belum menemukan kopi favorit Anda. Mari telusuri
             katalog produk kami.
           </p>
-          <Link
-            to="/products"
-            className="inline-block bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-md font-medium transition"
-          >
-            Mulai Belanja
-          </Link>
+          <Button asChild size="lg" className="px-8 mt-4">
+            <Link to="/products">Mulai Belanja</Link>
+          </Button>
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <AlertDialog
+        open={itemToDelete !== null}
+        onOpenChange={(open) => {
+          if (!open) setItemToDelete(null);
+        }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Produk</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin menghapus produk{" "}
+              <span className="font-semibold text-foreground">
+                {cart?.items?.find((i) => i.id === itemToDelete)?.product
+                  ?.name || "ini"}
+              </span>{" "}
+              dari keranjang belanja Anda?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive"
+              onClick={() => {
+                if (itemToDelete) {
+                  removeItem(itemToDelete);
+                  setItemToDelete(null);
+                }
+              }}
+            >
+              Ya, Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

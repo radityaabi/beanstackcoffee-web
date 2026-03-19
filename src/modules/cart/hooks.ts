@@ -5,7 +5,7 @@ import type { components } from "@/schema";
 type AddToCartDto = components["schemas"]["AddToCart"];
 type UpdateCartItemDto = components["schemas"]["UpdateCartItem"];
 
-export const useCart = () => {
+export const useCart = (isAuthenticated: boolean = false) => {
   return useQuery({
     queryKey: ["cart"],
     queryFn: async () => {
@@ -17,6 +17,7 @@ export const useCart = () => {
 
       return data;
     },
+    enabled: isAuthenticated,
   });
 };
 

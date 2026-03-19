@@ -10,7 +10,19 @@ type GetProductsQuery = NonNullable<
 
 export const useProducts = (query?: GetProductsQuery) => {
   return useQuery({
-    queryKey: ["products", query],
+    queryKey: [
+      "products",
+      query?.search,
+      query?.type,
+      query?.sortBy,
+      query?.sortOrder,
+      query?.minWeight,
+      query?.maxWeight,
+      query?.minPrice,
+      query?.maxPrice,
+      query?.limit,
+      query?.page,
+    ],
     queryFn: async () => {
       const { data, error, response } = await fetchClient.GET("/products", {
         params: { query },

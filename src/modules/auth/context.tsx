@@ -2,6 +2,7 @@ import React, {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   useCallback,
 } from "react";
@@ -29,8 +30,11 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const isFetchingMe = useRef(false);
 
   const fetchMe = useCallback(async () => {
+    if (isFetchingMe.current) return;
+    isFetchingMe.current = true;
     try {
       const { data } = await fetchClient.GET("/auth/me");
       setUser(data ?? null);
@@ -38,6 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
     } finally {
       setIsLoading(false);
+      isFetchingMe.current = false;
     }
   }, []);
 

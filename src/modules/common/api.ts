@@ -7,6 +7,7 @@ let isRefreshing = false;
 let refreshQueue: ((token: string | null) => void)[] = [];
 
 const pendingRequests = new Map<string, Request>();
+const retriedRequests = new Set<string>();
 
 async function refreshAccessToken(): Promise<string | null> {
   const refreshToken = localStorage.getItem("refreshToken");
@@ -50,6 +51,14 @@ fetchClient.use({
 
     if (response.status !== 401 || !clone) return;
 
+    if (clone.url.includes("/auth/logout")) return;
+
+    if (retriedRequests.has(id)) {
+      retriedRequests.delete(id);
+      window.dispatchEvent(new Event("auth-unauthorized"));
+      return;
+    }
+
     if (!localStorage.getItem("refreshToken")) {
       window.dispatchEvent(new Event("auth-unauthorized"));
       return;
@@ -61,6 +70,7 @@ fetchClient.use({
       );
       if (!newToken) return;
 
+      retriedRequests.add(id);
       const headers = new Headers(clone.headers);
       headers.set("Authorization", `Bearer ${newToken}`);
       return fetch(new Request(clone, { headers }));
@@ -82,6 +92,7 @@ fetchClient.use({
     refreshQueue.forEach((resolve) => resolve(newToken));
     refreshQueue = [];
 
+    retriedRequests.add(id);
     const headers = new Headers(clone.headers);
     headers.set("Authorization", `Bearer ${newToken}`);
     return fetch(new Request(clone, { headers }));
@@ -89,5 +100,6 @@ fetchClient.use({
 
   onError({ id }) {
     pendingRequests.delete(id);
+    retriedRequests.delete(id);
   },
 });

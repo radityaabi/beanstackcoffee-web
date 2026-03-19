@@ -11,10 +11,12 @@ import {
 } from "@phosphor-icons/react";
 import { useCart } from "@/modules/cart/hooks";
 import { useAuth } from "@/modules/auth/hooks";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function MainLayout() {
-  const { data: cart } = useCart();
   const { user, isAuthenticated, logout } = useAuth();
+  const { data: cart } = useCart(isAuthenticated);
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
 
@@ -56,12 +58,12 @@ export function MainLayout() {
             {/* Search Bar */}
             <div className="hidden lg:flex grow justify-center px-8">
               <form action="/products" className="w-full max-w-md relative">
-                <input
+                <Input
                   type="text"
                   name="search"
                   defaultValue={searchQuery}
                   placeholder="Cari biji kopi (misal: Gayo)..."
-                  className="w-full pl-4 pr-10 py-2 rounded-full border border-border bg-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm transition-shadow shadow-sm text-foreground"
+                  className="w-full pl-4 pr-10 rounded-full"
                 />
                 <button
                   type="submit"
@@ -88,32 +90,29 @@ export function MainLayout() {
               <div className="hidden md:flex space-x-2 border-l border-border pl-4 items-center">
                 {isAuthenticated ? (
                   <>
-                    <span className="flex items-center gap-1.5 text-sm font-medium text-foreground">
+                    <span className="flex items-center gap-1.5 text-sm font-medium text-foreground mr-2">
                       <UserCircleIcon className="w-5 h-5" />
                       {user?.username}
                     </span>
-                    <button
+                    <Button
+                      variant="ghost"
                       onClick={logout}
-                      className="flex items-center gap-1.5 text-muted-foreground hover:text-destructive px-3 py-2 text-sm font-medium transition"
+                      className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                     >
-                      <SignOutIcon className="w-4 h-4" />
+                      <SignOutIcon className="w-4 h-4 mr-1.5" />
                       Logout
-                    </button>
+                    </Button>
                   </>
                 ) : (
                   <>
-                    <Link
-                      to="/login"
-                      className="text-muted-foreground hover:text-primary px-3 py-2 text-sm font-medium"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      to="/register"
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-md text-sm font-medium transition shadow-sm"
-                    >
-                      Register
-                    </Link>
+                    <Button variant="ghost" asChild>
+                      <Link to="/login" className="text-muted-foreground">
+                        Login
+                      </Link>
+                    </Button>
+                    <Button asChild>
+                      <Link to="/register">Register</Link>
+                    </Button>
                   </>
                 )}
               </div>
@@ -124,12 +123,12 @@ export function MainLayout() {
         {/* Mobile Search Bar */}
         <div className="lg:hidden px-4 pb-4">
           <form action="/products" className="w-full relative">
-            <input
+            <Input
               type="text"
               name="search"
               defaultValue={searchQuery}
               placeholder="Cari biji kopi (misal: Gayo)..."
-              className="w-full pl-4 pr-10 py-2 rounded-full border border-border bg-background focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm transition-shadow shadow-sm text-foreground"
+              className="w-full pl-4 pr-10 rounded-full"
             />
             <button
               type="submit"
