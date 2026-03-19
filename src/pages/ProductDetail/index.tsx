@@ -5,6 +5,7 @@ import {
   MinusIcon,
   PlusIcon,
   CaretLeftIcon,
+  XCircleIcon,
 } from "@phosphor-icons/react";
 import { useProduct } from "@/modules/product/hooks";
 import { useAddToCart } from "@/modules/cart/hooks";
@@ -14,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -22,12 +25,6 @@ export default function ProductDetail() {
   const { isAuthenticated } = useAuth();
 
   const [quantity, setQuantity] = useState(1);
-  const [notification, setNotification] = useState<{
-    message: string;
-    isError: boolean;
-  } | null>(null);
-
-  const clearNotification = () => setTimeout(() => setNotification(null), 3000);
 
   const navigate = useNavigate();
 
@@ -47,12 +44,15 @@ export default function ProductDetail() {
         { productId: product.id, quantity },
         {
           onSuccess: () => {
-            setNotification({
-              message: "Berhasil ditambahkan ke keranjang!",
-              isError: false,
-            });
+            toast.custom(() => (
+              <div className="border-border flex items-center gap-2 rounded-md border bg-white p-2">
+                <ShoppingCartIcon className="text-primary size-4" />
+                <span className="text-foreground text-sm">
+                  Berhasil ditambahkan ke keranjang!
+                </span>
+              </div>
+            ));
             setQuantity(1);
-            clearNotification();
           },
           onError: () => {
             if (
@@ -65,11 +65,14 @@ export default function ProductDetail() {
                 },
               });
             } else {
-              setNotification({
-                message: "Gagal menambahkan ke keranjang.",
-                isError: true,
-              });
-              clearNotification();
+              toast.custom(() => (
+                <div className="border-border flex items-center gap-2 rounded-md border bg-white p-2">
+                  <XCircleIcon className="text-destructive size-4" />
+                  <span className="text-foreground text-sm">
+                    Gagal menambahkan ke keranjang.
+                  </span>
+                </div>
+              ));
             }
           },
         },
@@ -234,22 +237,10 @@ export default function ProductDetail() {
                 </Button>
               )}
             </div>
-
-            {/* Success Message Banner */}
-            {notification && (
-              <div
-                className={`animate-in fade-in slide-in-from-bottom-2 mt-4 rounded-md p-3 text-center text-sm ${
-                  notification.isError
-                    ? "bg-destructive/10 text-destructive"
-                    : "text-chart-4"
-                }`}
-              >
-                {notification.message}
-              </div>
-            )}
           </div>
         </div>
       </div>
+      <Toaster position="top-center" />
     </div>
   );
 }
