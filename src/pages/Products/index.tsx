@@ -161,8 +161,8 @@ export default function Products() {
               </Button>
 
               <div className="flex items-center gap-2">
-                {Array.from({ length: totalPages }).map((_, idx) => {
-                  const pageNum = idx + 1;
+                {Array.from({ length: totalPages }).map((_, index) => {
+                  const pageNum = index + 1;
                   const isActive = pageNum === currentPage;
                   return (
                     <Button
