@@ -157,7 +157,7 @@ export function MainLayout() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0 text-center md:text-left">
               <span className="text-2xl font-bold text-primary tracking-tight">
-                Beanstack.
+                Beanstack
               </span>
               <p className="text-muted-foreground text-sm mt-2">
                 Diseduh dengan cinta di Indonesia.
@@ -191,7 +191,7 @@ export function MainLayout() {
             </div>
           </div>
           <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-            &copy; 2026 Beanstack. All rights reserved.
+            &copy; 2026 Beanstack Coffee All rights reserved.
           </div>
         </div>
       </footer>
