@@ -21,8 +21,8 @@ export const useLogin = () => {
       });
 
       if (error) {
-        const msg = (error as { message?: string })?.message;
-        throw new Error(msg || "Invalid email or password");
+        const message = (error as { message?: string })?.message;
+        throw new Error(message || "Invalid email or password");
       }
 
       if (data) {
@@ -44,8 +44,8 @@ export const useRegister = () => {
       });
 
       if (error) {
-        const msg = (error as { message?: string })?.message;
-        throw new Error(msg || "Username or email already exists");
+        const message = (error as { message?: string })?.message;
+        throw new Error(message || "Username or email already exists");
       }
 
       return data;

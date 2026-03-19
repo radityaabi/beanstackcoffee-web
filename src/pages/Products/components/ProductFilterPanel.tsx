@@ -136,14 +136,14 @@ export function ProductFilterPanel() {
               <div className="flex items-center space-x-2">
                 <input
                   type="text"
-                  value={sliders.wMin.toLocaleString("id-ID")}
+                  value={sliders.weightMin.toLocaleString("id-ID")}
                   readOnly
                   className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
                 />
                 <span className="text-muted-foreground">-</span>
                 <input
                   type="text"
-                  value={sliders.wMax.toLocaleString("id-ID")}
+                  value={sliders.weightMax.toLocaleString("id-ID")}
                   readOnly
                   className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
                 />
@@ -152,26 +152,26 @@ export function ProductFilterPanel() {
                 <div
                   className="absolute h-1.5 bg-primary rounded-full transition-all"
                   style={{
-                    left: `${(sliders.wMin / maxWeight) * 100}%`,
-                    right: `${100 - (sliders.wMax / maxWeight) * 100}%`,
+                    left: `${(sliders.weightMin / maxWeight) * 100}%`,
+                    right: `${100 - (sliders.weightMax / maxWeight) * 100}%`,
                   }}
                 />
                 <input
                   type="range"
-                  name="wMin"
+                  name="weightMin"
                   min="0"
                   max={maxWeight}
-                  value={sliders.wMin}
+                  value={sliders.weightMin}
                   step="50"
                   onChange={handleSliderChange}
                   className="absolute w-full -top-[5px] appearance-none bg-transparent pointer-events-none custom-slider"
                 />
                 <input
                   type="range"
-                  name="wMax"
+                  name="weightMax"
                   min="0"
                   max={maxWeight}
-                  value={sliders.wMax}
+                  value={sliders.weightMax}
                   step="50"
                   onChange={handleSliderChange}
                   className="absolute w-full -top-[5px] appearance-none bg-transparent pointer-events-none custom-slider"
@@ -189,14 +189,14 @@ export function ProductFilterPanel() {
               <div className="flex items-center space-x-2">
                 <input
                   type="text"
-                  value={sliders.pMin.toLocaleString("id-ID")}
+                  value={sliders.priceMin.toLocaleString("id-ID")}
                   readOnly
                   className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
                 />
                 <span className="text-muted-foreground">-</span>
                 <input
                   type="text"
-                  value={sliders.pMax.toLocaleString("id-ID")}
+                  value={sliders.priceMax.toLocaleString("id-ID")}
                   readOnly
                   className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
                 />
@@ -205,26 +205,26 @@ export function ProductFilterPanel() {
                 <div
                   className="absolute h-1.5 bg-primary rounded-full transition-all"
                   style={{
-                    left: `${(sliders.pMin / maxPrice) * 100}%`,
-                    right: `${100 - (sliders.pMax / maxPrice) * 100}%`,
+                    left: `${(sliders.priceMin / maxPrice) * 100}%`,
+                    right: `${100 - (sliders.priceMax / maxPrice) * 100}%`,
                   }}
                 />
                 <input
                   type="range"
-                  name="pMin"
+                  name="priceMin"
                   min="0"
                   max={maxPrice}
-                  value={sliders.pMin}
+                  value={sliders.priceMin}
                   step="5000"
                   onChange={handleSliderChange}
                   className="absolute w-full -top-[5px] appearance-none bg-transparent pointer-events-none custom-slider"
                 />
                 <input
                   type="range"
-                  name="pMax"
+                  name="priceMax"
                   min="0"
                   max={maxPrice}
-                  value={sliders.pMax}
+                  value={sliders.priceMax}
                   step="5000"
                   onChange={handleSliderChange}
                   className="absolute w-full -top-[5px] appearance-none bg-transparent pointer-events-none custom-slider"

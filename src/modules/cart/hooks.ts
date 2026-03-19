@@ -31,8 +31,8 @@ export const useAddToCart = () => {
       });
 
       if (error) {
-        const msg = (error as { message?: string })?.message;
-        throw new Error(msg || "Failed to add to cart");
+        const message = (error as { message?: string })?.message;
+        throw new Error(message || "Failed to add to cart");
       }
 
       return data;

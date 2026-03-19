@@ -65,20 +65,25 @@ export const useProduct = (slug: string) => {
 };
 
 const SLIDER_DEFAULTS = {
-  wMin: 0,
-  wMax: 2000,
-  pMin: 0,
-  pMax: 2000000,
+  weightMin: 0,
+  weightMax: 2000,
+  priceMin: 0,
+  priceMax: 2000000,
 } as const;
 
-type SliderState = { wMin: number; wMax: number; pMin: number; pMax: number };
+type SliderState = {
+  weightMin: number;
+  weightMax: number;
+  priceMin: number;
+  priceMax: number;
+};
 
 function parseSlidersFromParams(params: URLSearchParams): SliderState {
   return {
-    wMin: parseInt(params.get("minWeight") || "0", 10),
-    wMax: parseInt(params.get("maxWeight") || "2000", 10),
-    pMin: parseInt(params.get("minPrice") || "0", 10),
-    pMax: parseInt(params.get("maxPrice") || "2000000", 10),
+    weightMin: parseInt(params.get("minWeight") || "0", 10),
+    weightMax: parseInt(params.get("maxWeight") || "2000", 10),
+    priceMin: parseInt(params.get("minPrice") || "0", 10),
+    priceMax: parseInt(params.get("maxPrice") || "2000000", 10),
   };
 }
 
@@ -100,12 +105,23 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
   switch (action.type) {
     case "SET_SLIDER": {
       const { name, value: n } = action;
-      let { wMin, wMax, pMin, pMax } = state;
-      if (name === "wMin") wMin = Math.min(n, wMax - 50);
-      else if (name === "wMax") wMax = Math.max(n, wMin + 50);
-      else if (name === "pMin") pMin = Math.min(n, pMax - 5000);
-      else if (name === "pMax") pMax = Math.max(n, pMin + 5000);
-      return { ...state, wMin, wMax, pMin, pMax };
+      let {
+        weightMin: weightMin,
+        weightMax: weightMax,
+        priceMin: priceMin,
+        priceMax: priceMax,
+      } = state;
+      if (name === "weightMin") weightMin = Math.min(n, weightMax - 50);
+      else if (name === "weightMax") weightMax = Math.max(n, weightMin + 50);
+      else if (name === "priceMin") priceMin = Math.min(n, priceMax - 5000);
+      else if (name === "priceMax") priceMax = Math.max(n, priceMin + 5000);
+      return {
+        ...state,
+        weightMin: weightMin,
+        weightMax: weightMax,
+        priceMin: priceMin,
+        priceMax: priceMax,
+      };
     }
     case "RESET_SLIDERS":
       return { ...state, ...SLIDER_DEFAULTS };
@@ -167,15 +183,20 @@ export const useProductFilters = () => {
       const types = formData.getAll("type") as string[];
       if (types.length > 0) newParams.set("type", types.join(","));
 
-      const { wMin, wMax, pMin, pMax } = filterState;
-      if (wMin !== SLIDER_DEFAULTS.wMin)
-        newParams.set("minWeight", wMin.toString());
-      if (wMax !== SLIDER_DEFAULTS.wMax)
-        newParams.set("maxWeight", wMax.toString());
-      if (pMin !== SLIDER_DEFAULTS.pMin)
-        newParams.set("minPrice", pMin.toString());
-      if (pMax !== SLIDER_DEFAULTS.pMax)
-        newParams.set("maxPrice", pMax.toString());
+      const {
+        weightMin: weightMin,
+        weightMax: weightMax,
+        priceMin: priceMin,
+        priceMax: priceMax,
+      } = filterState;
+      if (weightMin !== SLIDER_DEFAULTS.weightMin)
+        newParams.set("minWeight", weightMin.toString());
+      if (weightMax !== SLIDER_DEFAULTS.weightMax)
+        newParams.set("maxWeight", weightMax.toString());
+      if (priceMin !== SLIDER_DEFAULTS.priceMin)
+        newParams.set("minPrice", priceMin.toString());
+      if (priceMax !== SLIDER_DEFAULTS.priceMax)
+        newParams.set("maxPrice", priceMax.toString());
 
       newParams.set("page", "1");
       setSearchParams(newParams);
