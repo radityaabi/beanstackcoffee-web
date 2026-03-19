@@ -1,4 +1,4 @@
-import { Link, Outlet, useSearchParams } from "react-router-dom";
+import { Link, Outlet, useSearchParams, useLocation } from "react-router-dom";
 import {
   MagnifyingGlassIcon,
   ShoppingCartIcon,
@@ -18,6 +18,7 @@ export function MainLayout() {
   const { user, isAuthenticated, logout } = useAuth();
   const { data: cart } = useCart(isAuthenticated);
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const searchQuery = searchParams.get("search") || "";
 
   const totalItems = cart?.items?.length ?? 0;
@@ -35,20 +36,25 @@ export function MainLayout() {
                   alt="Beanstack"
                   className="w-8 h-8 group-hover:scale-105 transition-transform duration-300"
                 />
-                <span className="text-2xl font-bold text-foreground group-hover:text-primary transition tracking-tight">
-                  Beanstack.
-                </span>
+                <div className="flex flex-col">
+                  <span className="text-2xl font-bold text-foreground group-hover:text-primary transition tracking-tight leading-none">
+                    Beanstack
+                  </span>
+                  <span className="mt-0.1 text-[9px] font-bold text-muted-foreground tracking-[0.3em] group-hover:text-primary/80 transition pl-0.5 text-center">
+                    COFFEE
+                  </span>
+                </div>
               </Link>
               <div className="hidden text-foreground md:flex space-x-6">
                 <Link
                   to="/"
-                  className="text-foreground hover:text-primary transition font-medium"
+                  className={`${location.pathname === "/" ? "text-foreground" : "text-muted-foreground"} hover:text-primary transition font-medium`}
                 >
                   Home
                 </Link>
                 <Link
                   to="/products"
-                  className="text-muted-foreground hover:text-primary transition font-medium"
+                  className={`${location.pathname.startsWith("/products") ? "text-foreground" : "text-muted-foreground"} hover:text-primary transition font-medium`}
                 >
                   Products
                 </Link>
@@ -128,7 +134,7 @@ export function MainLayout() {
               name="search"
               defaultValue={searchQuery}
               placeholder="Cari biji kopi (misal: Gayo)..."
-              className="w-full pl-4 pr-10 rounded-full"
+              className="w-full pl-4 pr-10 rounded-full bg-white"
             />
             <button
               type="submit"

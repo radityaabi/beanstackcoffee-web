@@ -121,7 +121,7 @@ export default function ProductDetail() {
             <div className="mb-2">
               <Badge
                 variant="secondary"
-                className="px-3 py-1 uppercase tracking-wider"
+                className="px-3 py-1 uppercase tracking-wider text-primary font-bold"
               >
                 {product.type}
               </Badge>

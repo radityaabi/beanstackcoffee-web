@@ -169,7 +169,7 @@ export default function Cart() {
                         variant="ghost"
                         size="icon"
                         onClick={() => setItemToDelete(item.id)}
-                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full"
+                        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full hover:cursor-pointer"
                         title="Hapus item"
                       >
                         <TrashIcon className="w-5 h-5" />
@@ -254,9 +254,11 @@ export default function Cart() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogCancel className="hover:cursor-pointer">
+              Batal
+            </AlertDialogCancel>
             <AlertDialogAction
-              className="bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive"
+              className="bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive hover:cursor-pointer"
               onClick={() => {
                 if (itemToDelete) {
                   removeItem(itemToDelete);

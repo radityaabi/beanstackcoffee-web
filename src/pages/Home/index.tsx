@@ -91,7 +91,7 @@ export default function Home() {
                     <Button
                       variant="secondary"
                       size="icon"
-                      className="h-8 w-8 sm:h-9 sm:w-9 rounded-full shadow-sm"
+                      className="hidden sm:inline-flex h-8 w-8 sm:h-9 sm:w-9 rounded-full shadow-sm"
                     >
                       <ShoppingCartIcon
                         weight="bold"

@@ -86,7 +86,8 @@ type FilterAction =
   | { type: "SET_SLIDER"; name: keyof SliderState; value: number }
   | { type: "RESET_SLIDERS" }
   | { type: "SYNC_FROM_PARAMS"; params: URLSearchParams }
-  | { type: "TOGGLE_FILTER_OPEN" };
+  | { type: "TOGGLE_FILTER_OPEN" }
+  | { type: "CLOSE_FILTER" };
 
 type FilterState = SliderState & { isFilterOpen: boolean };
 
@@ -112,6 +113,8 @@ function filterReducer(state: FilterState, action: FilterAction): FilterState {
       return { ...state, ...parseSlidersFromParams(action.params) };
     case "TOGGLE_FILTER_OPEN":
       return { ...state, isFilterOpen: !state.isFilterOpen };
+    case "CLOSE_FILTER":
+      return { ...state, isFilterOpen: false };
     default:
       return state;
   }
@@ -176,6 +179,7 @@ export const useProductFilters = () => {
 
       newParams.set("page", "1");
       setSearchParams(newParams);
+      dispatch({ type: "CLOSE_FILTER" });
     },
     [searchParams, filterState, setSearchParams],
   );
