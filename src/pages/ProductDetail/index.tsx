@@ -193,7 +193,8 @@ export default function ProductDetail() {
                     size="lg"
                     onClick={handleAddToCart}
                     disabled={isAdding}
-                    className="flex-1 h-12 flex items-center justify-center gap-2 hover:cursor-pointer hover:bg-teal-700 px-0 sm:px-8"
+                    className="flex-1 h-12 flex items-center justify-center gap-2 hover:cursor-pointer px-0 sm:px-8"
+                    variant="default"
                   >
                     {isAdding ? (
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-background"></div>
@@ -219,7 +220,7 @@ export default function ProductDetail() {
 
             {/* Success Message Banner */}
             {addedMessage && (
-              <div className="mt-4 p-3 text-emerald-600 rounded-md text-sm text-center animate-in fade-in slide-in-from-bottom-2">
+              <div className="mt-4 p-3 text-chart-4 rounded-md text-sm text-center animate-in fade-in slide-in-from-bottom-2">
                 {addedMessage}
               </div>
             )}
