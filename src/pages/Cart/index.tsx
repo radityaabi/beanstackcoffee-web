@@ -144,7 +144,7 @@ export default function Cart() {
                           onClick={() =>
                             handleUpdateQuantity(item.id, item.quantity - 1)
                           }
-                          className="h-9 w-9 rounded-none"
+                          className="h-9 w-9 rounded-none hover:cursor-pointer hover:bg-muted/30"
                         >
                           <MinusIcon className="w-3 h-3" />
                         </Button>
@@ -157,7 +157,7 @@ export default function Cart() {
                           onClick={() =>
                             handleUpdateQuantity(item.id, item.quantity + 1)
                           }
-                          className="h-9 w-9 rounded-none"
+                          className="h-9 w-9 rounded-none hover:cursor-pointer hover:bg-muted/30"
                         >
                           <PlusIcon className="w-3 h-3" />
                         </Button>
@@ -206,7 +206,10 @@ export default function Cart() {
                 </div>
               </div>
 
-              <Button size="lg" className="w-full mb-4">
+              <Button
+                size="lg"
+                className="w-full mb-4 hover:cursor-pointer hover:bg-teal-700"
+              >
                 Lanjut ke Pembayaran
               </Button>
             </div>

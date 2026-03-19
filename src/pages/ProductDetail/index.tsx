@@ -167,7 +167,7 @@ export default function ProductDetail() {
                       variant="ghost"
                       size="icon"
                       onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                      className="rounded-none rounded-l-md flex-1 h-12"
+                      className="rounded-none rounded-l-md flex-1 h-12 hover:cursor-pointer hover:bg-muted/40"
                       disabled={quantity <= 1 || isAdding}
                     >
                       <MinusIcon weight="bold" className="w-4 h-4" />
@@ -183,7 +183,7 @@ export default function ProductDetail() {
                         quantity < product.stockQuantity &&
                         setQuantity(quantity + 1)
                       }
-                      className="rounded-none rounded-r-md flex-1 h-12"
+                      className="rounded-none rounded-r-md flex-1 h-12 hover:cursor-pointer hover:bg-muted/40"
                       disabled={quantity >= product.stockQuantity || isAdding}
                     >
                       <PlusIcon weight="bold" className="w-4 h-4" />
@@ -193,7 +193,7 @@ export default function ProductDetail() {
                     size="lg"
                     onClick={handleAddToCart}
                     disabled={isAdding}
-                    className="flex-1 h-12 flex items-center justify-center gap-2"
+                    className="flex-1 h-12 flex items-center justify-center gap-2 hover:cursor-pointer hover:bg-teal-700"
                   >
                     <ShoppingCartIcon weight="bold" className="w-5 h-5" />
                     {isAdding ? "Menambahkan..." : "Tambah ke Keranjang"}
