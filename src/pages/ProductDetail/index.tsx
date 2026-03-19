@@ -154,7 +154,7 @@ export default function ProductDetail() {
             <div className="mt-auto">
               {product.stockQuantity > 0 ? (
                 <div className="flex flex-row gap-4">
-                  <div className="flex items-center border border-border rounded-md w-32 shrink-0">
+                  <div className="flex items-center border border-border bg-background overflow-hidden rounded-md w-32 shrink-0">
                     <Button
                       variant="ghost"
                       size="icon"
