@@ -1,4 +1,4 @@
-import { FunnelIcon, CaretRightIcon } from "@phosphor-icons/react";
+import { FunnelIcon, X } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { useProductFilters } from "@/modules/product/hooks";
 import type { components } from "@/schema";
@@ -25,31 +25,54 @@ export function ProductFilterPanel() {
 
   return (
     <div className="w-full md:w-64 shrink-0">
+      {/* Mobile Filter Toggle Button */}
       <Button
         type="button"
         variant="outline"
         onClick={toggleFilterOpen}
-        className="md:hidden w-full h-14 flex justify-between items-center rounded-lg shadow-sm"
+        className="md:hidden w-full h-12 flex items-center justify-center gap-2 mb-2 rounded-lg bg-background font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
       >
-        <span className="flex items-center gap-2">
-          <FunnelIcon weight="bold" className="w-5 h-5 text-primary" />
-          Filter & Urutkan
-        </span>
-        <CaretRightIcon
-          weight="bold"
-          className={`w-5 h-5 text-muted-foreground transition-transform ${isFilterOpen ? "rotate-90" : ""}`}
-        />
+        <FunnelIcon weight="bold" className="w-5 h-5 text-primary" />
+        Filter
       </Button>
 
+      {/* Overlay background for mobile */}
+      {isFilterOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden animate-in fade-in"
+          onClick={toggleFilterOpen}
+        />
+      )}
+
       <aside
-        className={`${isFilterOpen ? "block mt-4" : "hidden"} md:block md:mt-0`}
+        className={`fixed top-0 right-0 z-50 h-dvh w-[85%] sm:w-80 bg-background shadow-2xl transition-transform duration-300 ease-in-out md:static md:z-auto md:h-auto md:w-full md:bg-transparent md:shadow-none md:translate-x-0 ${
+          isFilterOpen ? "translate-x-0" : "translate-x-full hidden md:block"
+        }`}
       >
         <form
           onSubmit={handleApplyFilter}
           onReset={handleResetFilter}
-          className="bg-background rounded-lg border border-border p-5 sticky top-24 shadow-sm space-y-6"
+          className="h-full overflow-y-auto md:overflow-visible bg-background rounded-none md:rounded-lg border-l md:border border-border p-5 md:sticky md:top-24 md:shadow-sm space-y-6"
         >
-          <div className="flex items-center gap-2 mb-4">
+          {/* Mobile Header with close button */}
+          <div className="flex items-center justify-between mb-2 md:hidden">
+            <h2 className="font-semibold text-lg text-foreground flex items-center gap-2">
+              <FunnelIcon weight="bold" className="w-5 h-5 text-primary" />
+              Filter & Urutkan
+            </h2>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={toggleFilterOpen}
+              className="h-8 w-8 rounded-full"
+            >
+              <X weight="bold" className="w-5 h-5" />
+            </Button>
+          </div>
+
+          {/* Desktop header */}
+          <div className="hidden md:flex items-center gap-2 mb-4">
             <FunnelIcon weight="bold" className="w-5 h-5 text-primary" />
             <h2 className="font-semibold text-lg text-foreground">
               Filter & Urutkan

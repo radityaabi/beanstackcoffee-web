@@ -190,6 +190,7 @@ export const useProductFilters = () => {
     const searchVal = searchParams.get("search");
     if (searchVal) newParams.set("search", searchVal);
     setSearchParams(newParams);
+    dispatch({ type: "CLOSE_FILTER" });
   }, [searchParams, setSearchParams]);
 
   return {

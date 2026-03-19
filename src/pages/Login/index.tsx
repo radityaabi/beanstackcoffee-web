@@ -22,7 +22,6 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
       <Card className="max-w-md w-full shadow-xl overflow-hidden rounded-2xl">
@@ -75,7 +74,7 @@ const Login = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 rounded-xl"
+                  className="pl-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="you@example.com"
                 />
               </div>
@@ -93,7 +92,7 @@ const Login = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 rounded-xl"
+                  className="pl-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="••••••••"
                 />
               </div>

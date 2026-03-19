@@ -76,7 +76,7 @@ const Register = () => {
                   required
                   value={formData.username}
                   onChange={handleChange}
-                  className="pl-10 rounded-xl"
+                  className="pl-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="johndoe123"
                 />
               </div>
@@ -94,7 +94,7 @@ const Register = () => {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="pl-10 rounded-xl"
+                  className="pl-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="you@example.com"
                 />
               </div>
@@ -113,7 +113,7 @@ const Register = () => {
                   minLength={8}
                   value={formData.password}
                   onChange={handleChange}
-                  className="pl-10 rounded-xl"
+                  className="pl-10 rounded-xl bg-white focus:bg-amber-50"
                   placeholder="••••••••"
                 />
               </div>
