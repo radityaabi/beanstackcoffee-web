@@ -11,7 +11,7 @@ type LoginPayload = components["schemas"]["Login"];
 type RegisterPayload = components["schemas"]["Register"];
 
 export const useLogin = () => {
-  const { setTokens } = useAuth();
+  const { invalidateAuth } = useAuth();
   const navigate = useNavigate();
 
   return useMutation({
@@ -25,12 +25,12 @@ export const useLogin = () => {
         throw new Error(message || "Invalid email or password");
       }
 
-      if (data) {
-        setTokens(data.token, data.refreshToken, data.user as never);
-      }
       return data;
     },
-    onSuccess: () => navigate("/"),
+    onSuccess: () => {
+      invalidateAuth();
+      navigate("/");
+    },
   });
 };
 

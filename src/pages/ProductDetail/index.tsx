@@ -25,6 +25,12 @@ export default function ProductDetail() {
   const { isAuthenticated } = useAuth();
 
   const [quantity, setQuantity] = useState(1);
+  const [displayQuantity, setDisplayQuantity] = useState("1");
+
+  const updateQuantity = (value: number) => {
+    setQuantity(value);
+    setDisplayQuantity(String(value));
+  };
 
   const navigate = useNavigate();
 
@@ -52,7 +58,7 @@ export default function ProductDetail() {
                 </span>
               </div>
             ));
-            setQuantity(1);
+            updateQuantity(1);
           },
           onError: () => {
             if (
@@ -182,28 +188,53 @@ export default function ProductDetail() {
             <div className="mt-auto">
               {product.stockQuantity > 0 ? (
                 <div className="flex flex-row gap-4">
-                  <div className="border-border bg-background flex w-32 shrink-0 items-center overflow-hidden rounded-md border">
+                  <div className="flex shrink-0 items-center gap-2">
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="icon"
-                      onClick={() => quantity > 1 && setQuantity(quantity - 1)}
-                      className="hover:bg-muted/40 h-12 flex-1 rounded-none rounded-l-md hover:cursor-pointer"
+                      onClick={() =>
+                        quantity > 1 && updateQuantity(quantity - 1)
+                      }
+                      className="border-border hover:bg-muted/40 h-12 w-12 rounded-lg bg-white hover:cursor-pointer"
                       disabled={quantity <= 1 || isAdding}
                     >
                       <MinusIcon weight="bold" className="h-4 w-4" />
                     </Button>
-                    <span className="text-foreground w-10 text-center font-medium">
-                      {quantity}
-                    </span>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      value={displayQuantity}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === "" || /^\d*$/.test(val)) {
+                          setDisplayQuantity(val);
+                        }
+                      }}
+                      onBlur={() => {
+                        const num = parseInt(displayQuantity, 10);
+                        if (isNaN(num) || num < 1) {
+                          updateQuantity(1);
+                        } else if (product && num > product.stockQuantity) {
+                          updateQuantity(product.stockQuantity);
+                        } else {
+                          updateQuantity(num);
+                        }
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") event.currentTarget.blur();
+                      }}
+                      disabled={isAdding}
+                      className="text-foreground border-border focus:ring-primary/40 h-12 w-14 [appearance:textfield] rounded-lg border bg-white px-1 text-center font-medium transition outline-none focus:ring-2 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                    />
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="icon"
                       onClick={() =>
                         product &&
                         quantity < product.stockQuantity &&
-                        setQuantity(quantity + 1)
+                        updateQuantity(quantity + 1)
                       }
-                      className="hover:bg-muted/40 h-12 flex-1 rounded-none rounded-r-md hover:cursor-pointer"
+                      className="border-border hover:bg-muted/40 h-12 w-12 rounded-lg bg-white hover:cursor-pointer"
                       disabled={quantity >= product.stockQuantity || isAdding}
                     >
                       <PlusIcon weight="bold" className="h-4 w-4" />

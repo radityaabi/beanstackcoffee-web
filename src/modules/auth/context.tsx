@@ -13,11 +13,7 @@ export interface AuthContextType {
   user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  setTokens: (
-    accessToken: string,
-    refreshToken: string,
-    userData?: AuthUser,
-  ) => void;
+  invalidateAuth: () => void;
   logout: () => void;
 }
 
@@ -27,45 +23,30 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
-  const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
 
-  const { data: user, isLoading: isQueryLoading, isFetching } = useQuery({
+  const { data: user, isLoading } = useQuery({
     queryKey: ["auth", "me"],
     queryFn: async () => {
       const { data } = await fetchClient.GET("/auth/me");
       return data ?? null;
     },
-    enabled: !!token,
     retry: false,
     staleTime: 5 * 60 * 1000,
   });
 
   const logout = useCallback(() => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    queryClient.setQueryData(["auth", "me"], null);
     fetchClient.POST("/auth/logout").catch(() => {});
+    queryClient.setQueryData(["auth", "me"], null);
     if (window.location.pathname !== "/login") window.location.href = "/login";
   }, [queryClient]);
 
-  const setTokens = useCallback(
-    (accessToken: string, refreshToken: string, userData?: AuthUser) => {
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      if (userData) {
-        queryClient.setQueryData(["auth", "me"], userData);
-      } else {
-        queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
-      }
-    },
-    [queryClient],
-  );
-
-  const isLoading = token ? (isQueryLoading || isFetching) : false;
+  const invalidateAuth = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
+  }, [queryClient]);
 
   return (
     <AuthContext.Provider
-      value={{ user: user || null, isAuthenticated: !!user, isLoading, setTokens, logout }}
+      value={{ user: user || null, isAuthenticated: !!user, isLoading, invalidateAuth, logout }}
     >
       {children}
     </AuthContext.Provider>

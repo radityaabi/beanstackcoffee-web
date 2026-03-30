@@ -33,18 +33,32 @@ export default function Cart() {
   const { mutate: removeItem } = useRemoveFromCart();
 
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+  const [displayQuantities, setDisplayQuantities] = useState<
+    Record<string, string>
+  >({});
+
+  const getDisplayQuantity = (itemId: string, quantity: number) =>
+    displayQuantities[itemId] ?? String(quantity);
+
+  const setDisplayQuantity = (itemId: string, value: string) =>
+    setDisplayQuantities((prev) => ({ ...prev, [itemId]: value }));
 
   const totalAmount = cart?.totalPrice ?? 0;
 
   const handleUpdateQuantity = (id: string, newQuantity: number) => {
     if (newQuantity < 1) return setItemToDelete(id);
     updateItem({ id, payload: { quantity: newQuantity } });
+    setDisplayQuantities((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
   };
 
   if (isLoading) {
     return (
-      <div className="flex justify-center flex-col items-center grow py-32">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
+      <div className="flex grow flex-col items-center justify-center py-32">
+        <div className="border-primary mb-4 h-12 w-12 animate-spin rounded-full border-b-2"></div>
         <p className="text-muted-foreground">Memuat keranjang Anda...</p>
       </div>
     );
@@ -52,8 +66,8 @@ export default function Cart() {
 
   if (error || !cart) {
     return (
-      <div className="flex justify-center flex-col items-center grow py-32">
-        <h2 className="text-2xl font-bold text-foreground mb-2">
+      <div className="flex grow flex-col items-center justify-center py-32">
+        <h2 className="text-foreground mb-2 text-2xl font-bold">
           Gagal memuat keranjang
         </h2>
         <p className="text-muted-foreground mb-6">
@@ -69,44 +83,44 @@ export default function Cart() {
   const hasItems = cart.items && cart.items.length > 0;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+    <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <Button
         variant="ghost"
         asChild
-        className="mb-8 -ml-4 text-muted-foreground hover:text-primary group"
+        className="text-muted-foreground hover:text-primary group mb-8 -ml-4"
       >
         <Link to="/products">
           <CaretLeftIcon
             weight="bold"
-            className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform"
+            className="mr-1 h-4 w-4 transition-transform group-hover:-translate-x-1"
           />
           Lanjutkan Belanja
         </Link>
       </Button>
 
-      <h1 className="text-3xl font-bold text-foreground mb-8">
+      <h1 className="text-foreground mb-8 text-3xl font-bold">
         Keranjang Belanja
       </h1>
 
       {hasItems ? (
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col gap-8 lg:flex-row">
           <div className="lg:w-2/3">
-            <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
-              <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-border bg-muted/50 text-sm font-medium text-muted-foreground">
+            <div className="bg-card border-border overflow-hidden rounded-xl border shadow-sm">
+              <div className="border-border bg-muted/50 text-muted-foreground hidden grid-cols-12 gap-4 border-b p-4 text-sm font-medium md:grid">
                 <div className="col-span-6">Produk</div>
                 <div className="col-span-3 text-center">Harga</div>
                 <div className="col-span-2 text-center">Jumlah</div>
                 <div className="col-span-1 text-right"></div>
               </div>
 
-              <div className="divide-y divide-border">
+              <div className="divide-border divide-y">
                 {cart.items.map((item) => (
                   <div
                     key={item.id}
-                    className="relative p-4 flex flex-col md:grid md:grid-cols-12 md:items-center gap-4 hover:bg-muted/10 transition"
+                    className="hover:bg-muted/10 relative flex flex-col gap-4 p-4 transition md:grid md:grid-cols-12 md:items-center"
                   >
                     <div className="col-span-6 flex items-center gap-4">
-                      <div className="w-20 h-20 bg-background rounded-md border border-border flex items-center justify-center p-2 shrink-0">
+                      <div className="bg-background border-border flex h-20 w-20 shrink-0 items-center justify-center rounded-md border p-2">
                         <img
                           src={
                             item.product?.imageUrl ||
@@ -119,52 +133,88 @@ export default function Cart() {
                       <div className="pr-14 md:pr-0">
                         <Link
                           to={`/products/${item.product?.slug}`}
-                          className="font-semibold text-foreground hover:text-primary transition line-clamp-2"
+                          className="text-foreground hover:text-primary line-clamp-2 font-semibold transition"
                         >
                           {item.product?.name}
                         </Link>
-                        <p className="text-xs text-muted-foreground mt-1 uppercase">
+                        <p className="text-muted-foreground mt-1 text-xs uppercase">
                           {item.product?.type} • {item.product?.weight}g
                         </p>
-                        <div className="md:hidden mt-2 font-medium text-primary">
+                        <div className="text-primary mt-2 font-medium md:hidden">
                           {formatRupiah(item.product?.price || 0)}
                         </div>
                       </div>
                     </div>
 
-                    <div className="hidden md:block col-span-3 text-center font-medium text-primary">
+                    <div className="text-primary col-span-3 hidden text-center font-medium md:block">
                       {formatRupiah(item.product?.price || 0)}
                     </div>
 
-                    <div className="col-span-2 flex md:justify-center items-center">
-                      <div className="flex outline outline-border rounded-md bg-background overflow-hidden h-9">
+                    <div className="col-span-2 flex items-center md:justify-center">
+                      <div className="flex items-center gap-1.5">
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="icon"
                           onClick={() =>
                             handleUpdateQuantity(item.id, item.quantity - 1)
                           }
-                          className="h-9 w-9 rounded-none hover:cursor-pointer hover:bg-muted/30"
+                          className="border-border hover:bg-muted/30 h-9 w-9 rounded-lg bg-white hover:cursor-pointer"
                         >
-                          <MinusIcon className="w-3 h-3" />
+                          <MinusIcon className="h-3 w-3" />
                         </Button>
-                        <span className="w-10 flex items-center justify-center text-sm font-medium">
-                          {item.quantity}
-                        </span>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          value={getDisplayQuantity(item.id, item.quantity)}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            if (val === "" || /^\d*$/.test(val)) {
+                              setDisplayQuantity(item.id, val);
+                            }
+                          }}
+                          onBlur={() => {
+                            const raw = getDisplayQuantity(
+                              item.id,
+                              item.quantity,
+                            );
+                            const num = parseInt(raw, 10);
+                            const maxQty =
+                              item.product?.stockQuantity ?? Infinity;
+                            if (isNaN(num) || num < 1) {
+                              handleUpdateQuantity(item.id, 1);
+                              setDisplayQuantity(item.id, "1");
+                            } else if (num > maxQty) {
+                              handleUpdateQuantity(item.id, maxQty);
+                              setDisplayQuantity(item.id, String(maxQty));
+                            } else {
+                              handleUpdateQuantity(item.id, num);
+                              setDisplayQuantity(item.id, String(num));
+                            }
+                          }}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter")
+                              event.currentTarget.blur();
+                          }}
+                          className="border-border focus:ring-primary/40 h-9 w-12 [appearance:textfield] rounded-lg border bg-white px-1 text-center text-sm font-medium transition outline-none focus:ring-2 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                        />
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="icon"
                           onClick={() =>
                             handleUpdateQuantity(item.id, item.quantity + 1)
                           }
-                          className="h-9 w-9 rounded-none hover:cursor-pointer hover:bg-muted/30"
+                          disabled={
+                            item.quantity >=
+                            (item.product?.stockQuantity ?? Infinity)
+                          }
+                          className="border-border hover:bg-muted/30 h-9 w-9 rounded-lg bg-white hover:cursor-pointer"
                         >
-                          <PlusIcon className="w-3 h-3" />
+                          <PlusIcon className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>
 
-                    <div className="col-span-1 text-right mt-2 md:mt-0 absolute md:static top-4 right-4">
+                    <div className="absolute top-4 right-4 col-span-1 mt-2 text-right md:static md:mt-0">
                       <Button
                         variant="ghost"
                         size="icon"
@@ -172,7 +222,7 @@ export default function Cart() {
                         className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-full hover:cursor-pointer"
                         title="Hapus item"
                       >
-                        <TrashIcon className="w-5 h-5" />
+                        <TrashIcon className="h-5 w-5" />
                       </Button>
                     </div>
                   </div>
@@ -182,25 +232,25 @@ export default function Cart() {
           </div>
 
           <div className="lg:w-1/3">
-            <div className="bg-card rounded-xl border border-border shadow-sm p-6 sticky top-24">
-              <h2 className="text-xl font-bold text-foreground mb-6">
+            <div className="bg-card border-border sticky top-24 rounded-xl border p-6 shadow-sm">
+              <h2 className="text-foreground mb-6 text-xl font-bold">
                 Ringkasan Belanja
               </h2>
 
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-muted-foreground">
+              <div className="mb-6 space-y-4">
+                <div className="text-muted-foreground flex justify-between">
                   <span>Total Harga ({cart.items.length} Barang)</span>
                   <span>{formatRupiah(totalAmount)}</span>
                 </div>
-                <div className="flex justify-between text-muted-foreground border-b border-border pb-4">
+                <div className="text-muted-foreground border-border flex justify-between border-b pb-4">
                   <span>Diskon</span>
                   <span>-</span>
                 </div>
-                <div className="flex justify-between items-center pt-2">
-                  <span className="font-bold text-lg text-foreground">
+                <div className="flex items-center justify-between pt-2">
+                  <span className="text-foreground text-lg font-bold">
                     Total Bayar
                   </span>
-                  <span className="font-bold text-2xl text-primary">
+                  <span className="text-primary text-2xl font-bold">
                     {formatRupiah(totalAmount)}
                   </span>
                 </div>
@@ -208,7 +258,7 @@ export default function Cart() {
 
               <Button
                 size="lg"
-                className="w-full mb-4 hover:cursor-pointer hover:bg-teal-700"
+                className="mb-4 w-full hover:cursor-pointer hover:bg-teal-700"
               >
                 Lanjut ke Pembayaran
               </Button>
@@ -216,19 +266,19 @@ export default function Cart() {
           </div>
         </div>
       ) : (
-        <div className="bg-card rounded-xl border border-border shadow-sm p-16 text-center">
+        <div className="bg-card border-border rounded-xl border p-16 text-center shadow-sm">
           <ShoppingCartIcon
             weight="light"
-            className="w-24 h-24 mx-auto text-muted-foreground mb-6 opacity-30"
+            className="text-muted-foreground mx-auto mb-6 h-24 w-24 opacity-30"
           />
-          <h2 className="text-2xl font-bold text-foreground mb-2">
+          <h2 className="text-foreground mb-2 text-2xl font-bold">
             Keranjang Anda Masih Kosong
           </h2>
-          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+          <p className="text-muted-foreground mx-auto mb-8 max-w-md">
             Sepertinya Anda belum menemukan kopi favorit Anda. Mari telusuri
             katalog produk kami.
           </p>
-          <Button asChild size="lg" className="px-8 mt-4">
+          <Button asChild size="lg" className="mt-4 px-8">
             <Link to="/products">Mulai Belanja</Link>
           </Button>
         </div>
@@ -246,7 +296,7 @@ export default function Cart() {
             <AlertDialogTitle>Hapus Produk</AlertDialogTitle>
             <AlertDialogDescription>
               Apakah Anda yakin ingin menghapus produk{" "}
-              <span className="font-semibold text-foreground">
+              <span className="text-foreground font-semibold">
                 {cart?.items?.find((i) => i.id === itemToDelete)?.product
                   ?.name || "ini"}
               </span>{" "}
