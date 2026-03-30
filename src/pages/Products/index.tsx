@@ -97,9 +97,9 @@ export default function Products() {
                 <Link
                   key={product.id}
                   to={`/products/${product.slug}`}
-                  className="border-border group flex h-full flex-col overflow-hidden rounded-lg border bg-white shadow-sm transition hover:shadow-md"
+                  className="border-border group flex h-full flex-col overflow-hidden rounded-lg border bg-gray-50 shadow-sm transition hover:shadow-md"
                 >
-                  <div className="border-border/50 relative flex h-40 items-center justify-center border-b bg-white p-2 sm:h-56 sm:p-4">
+                  <div className="border-border/50 relative flex h-40 items-center justify-center border-b bg-gray-50 p-2 sm:h-56 sm:p-4">
                     <img
                       src={getPreviewUrl(
                         product.imageUrl ||
