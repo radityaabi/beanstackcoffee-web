@@ -105,7 +105,7 @@ export default function Cart() {
       {hasItems ? (
         <div className="flex flex-col gap-8 lg:flex-row">
           <div className="lg:w-2/3">
-            <div className="bg-card border-border overflow-hidden rounded-xl border shadow-sm">
+            <div className="border-border overflow-hidden rounded-xl border bg-gray-50 shadow-sm">
               <div className="border-border bg-muted/50 text-muted-foreground hidden grid-cols-12 gap-4 border-b p-4 text-sm font-medium md:grid">
                 <div className="col-span-6">Produk</div>
                 <div className="col-span-3 text-center">Harga</div>
@@ -232,7 +232,7 @@ export default function Cart() {
           </div>
 
           <div className="lg:w-1/3">
-            <div className="bg-card border-border sticky top-24 rounded-xl border p-6 shadow-sm">
+            <div className="border-border sticky top-24 rounded-xl border bg-gray-50 p-6 shadow-sm">
               <h2 className="text-foreground mb-6 text-xl font-bold">
                 Ringkasan Belanja
               </h2>
@@ -241,10 +241,6 @@ export default function Cart() {
                 <div className="text-muted-foreground flex justify-between">
                   <span>Total Harga ({cart.items.length} Barang)</span>
                   <span>{formatRupiah(totalAmount)}</span>
-                </div>
-                <div className="text-muted-foreground border-border flex justify-between border-b pb-4">
-                  <span>Diskon</span>
-                  <span>-</span>
                 </div>
                 <div className="flex items-center justify-between pt-2">
                   <span className="text-foreground text-lg font-bold">
