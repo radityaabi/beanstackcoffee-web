@@ -52,9 +52,10 @@ fetchClient.use({
     }
 
     if (isRefreshing) {
-      const success = await new Promise<boolean>((resolve) =>
-        refreshQueue.push(resolve),
-      );
+      const success = await new Promise<boolean>((resolve) => [
+        ...refreshQueue,
+        resolve,
+      ]);
       if (!success) return;
 
       retriedRequests.add(id);

@@ -24,40 +24,40 @@ export function ProductFilterPanel() {
   const typeArray = typeFilter ? typeFilter.split(",") : [];
 
   return (
-    <div className="w-full md:w-64 shrink-0">
+    <div className="w-full shrink-0 md:w-64">
       {/* Mobile Filter Toggle Button */}
       <Button
         type="button"
         variant="outline"
         onClick={toggleFilterOpen}
-        className="md:hidden w-full h-12 flex items-center justify-center gap-2 mb-2 rounded-lg bg-background font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+        className="bg-background hover:bg-accent hover:text-accent-foreground mb-2 flex h-12 w-full items-center justify-center gap-2 rounded-lg font-medium transition-colors md:hidden"
       >
-        <FunnelIcon weight="bold" className="w-5 h-5 text-primary" />
+        <FunnelIcon weight="bold" className="text-primary h-5 w-5" />
         Filter
       </Button>
 
       {/* Overlay background for mobile */}
       {isFilterOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden animate-in fade-in"
+          className="animate-in fade-in fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
           onClick={toggleFilterOpen}
         />
       )}
 
       <aside
-        className={`fixed top-0 right-0 z-50 h-dvh w-[85%] sm:w-80 bg-background shadow-2xl transition-transform duration-300 ease-in-out md:static md:z-auto md:h-auto md:w-full md:bg-transparent md:shadow-none md:translate-x-0 ${
-          isFilterOpen ? "translate-x-0" : "translate-x-full hidden md:block"
+        className={`bg-background fixed top-0 right-0 z-50 h-dvh w-[85%] shadow-2xl transition-transform duration-300 ease-in-out sm:w-80 md:static md:z-auto md:h-auto md:w-full md:translate-x-0 md:bg-transparent md:shadow-none ${
+          isFilterOpen ? "translate-x-0" : "hidden translate-x-full md:block"
         }`}
       >
         <form
           onSubmit={handleApplyFilter}
           onReset={handleResetFilter}
-          className="h-full overflow-y-auto md:overflow-visible bg-background rounded-none md:rounded-lg border-l md:border border-border p-5 md:sticky md:top-24 md:shadow-sm space-y-6"
+          className="border-border h-full space-y-6 overflow-y-auto rounded-none border-l bg-white p-5 md:sticky md:top-24 md:overflow-visible md:rounded-lg md:border md:shadow-sm"
         >
           {/* Mobile Header with close button */}
-          <div className="flex items-center justify-between mb-2 md:hidden">
-            <h2 className="font-semibold text-lg text-foreground flex items-center gap-2">
-              <FunnelIcon weight="bold" className="w-5 h-5 text-primary" />
+          <div className="mb-2 flex items-center justify-between md:hidden">
+            <h2 className="text-foreground flex items-center gap-2 text-lg font-semibold">
+              <FunnelIcon weight="bold" className="text-primary h-5 w-5" />
               Filter & Urutkan
             </h2>
             <Button
@@ -67,21 +67,21 @@ export function ProductFilterPanel() {
               onClick={toggleFilterOpen}
               className="h-8 w-8 rounded-full"
             >
-              <X weight="bold" className="w-5 h-5" />
+              <X weight="bold" className="h-5 w-5" />
             </Button>
           </div>
 
           {/* Desktop header */}
-          <div className="hidden md:flex items-center gap-2 mb-4">
-            <FunnelIcon weight="bold" className="w-5 h-5 text-primary" />
-            <h2 className="font-semibold text-lg text-foreground">
+          <div className="mb-4 hidden items-center gap-2 md:flex">
+            <FunnelIcon weight="bold" className="text-primary h-5 w-5" />
+            <h2 className="text-foreground text-lg font-semibold">
               Filter & Urutkan
             </h2>
           </div>
 
           {/* Urutkan Berdasarkan */}
           <div>
-            <h3 className="font-medium mb-3 text-sm text-foreground">
+            <h3 className="text-foreground mb-3 text-sm font-medium">
               Urutkan Berdasarkan
             </h3>
             <select
@@ -91,7 +91,7 @@ export function ProductFilterPanel() {
                   ? `${searchParams.get("sortBy")}-${searchParams.get("sortOrder")}`
                   : ""
               }
-              className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-foreground cursor-pointer"
+              className="border-border bg-background focus:ring-primary focus:border-primary text-foreground w-full cursor-pointer rounded-md border px-3 py-2 text-sm focus:ring-1 focus:outline-none"
             >
               <option value="">Paling Relevan</option>
               <option value="name-asc">Nama: A - Z</option>
@@ -103,23 +103,23 @@ export function ProductFilterPanel() {
 
           {/* Jenis Kopi */}
           <div>
-            <h3 className="font-medium mb-3 text-sm text-foreground">
+            <h3 className="text-foreground mb-3 text-sm font-medium">
               Jenis Kopi
             </h3>
             <div className="space-y-2">
               {COFFEE_TYPES.map((type) => (
                 <label
                   key={type}
-                  className="flex items-center group cursor-pointer"
+                  className="group flex cursor-pointer items-center"
                 >
                   <input
                     type="checkbox"
                     name="type"
                     value={type}
-                    className="rounded border-border text-primary focus:ring-primary h-4 w-4 bg-background transition cursor-pointer"
+                    className="border-border text-primary focus:ring-primary bg-background h-4 w-4 cursor-pointer rounded transition"
                     defaultChecked={typeArray.includes(type)}
                   />
-                  <span className="ml-2 text-muted-foreground group-hover:text-foreground text-sm transition">
+                  <span className="text-muted-foreground group-hover:text-foreground ml-2 text-sm transition">
                     {type}
                   </span>
                 </label>
@@ -129,7 +129,7 @@ export function ProductFilterPanel() {
 
           {/* Berat (Gram) Dual Slider */}
           <div>
-            <h3 className="font-medium mb-3 text-sm text-foreground">
+            <h3 className="text-foreground mb-3 text-sm font-medium">
               Berat (Gram)
             </h3>
             <div className="flex flex-col space-y-4">
@@ -138,19 +138,19 @@ export function ProductFilterPanel() {
                   type="text"
                   value={sliders.weightMin.toLocaleString("id-ID")}
                   readOnly
-                  className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
+                  className="border-border bg-background text-foreground pointer-events-none w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
                 />
                 <span className="text-muted-foreground">-</span>
                 <input
                   type="text"
                   value={sliders.weightMax.toLocaleString("id-ID")}
                   readOnly
-                  className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
+                  className="border-border bg-background text-foreground pointer-events-none w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
                 />
               </div>
-              <div className="relative w-full h-1.5 bg-accent rounded-full mt-2">
+              <div className="bg-accent relative mt-2 h-1.5 w-full rounded-full">
                 <div
-                  className="absolute h-1.5 bg-primary rounded-full transition-all"
+                  className="bg-primary absolute h-1.5 rounded-full transition-all"
                   style={{
                     left: `${(sliders.weightMin / maxWeight) * 100}%`,
                     right: `${100 - (sliders.weightMax / maxWeight) * 100}%`,
@@ -164,7 +164,7 @@ export function ProductFilterPanel() {
                   value={sliders.weightMin}
                   step="50"
                   onChange={handleSliderChange}
-                  className="absolute w-full -top-1.25 appearance-none bg-transparent pointer-events-none custom-slider"
+                  className="custom-slider pointer-events-none absolute -top-1.25 w-full appearance-none bg-transparent"
                 />
                 <input
                   type="range"
@@ -174,7 +174,7 @@ export function ProductFilterPanel() {
                   value={sliders.weightMax}
                   step="50"
                   onChange={handleSliderChange}
-                  className="absolute w-full -top-1.25 appearance-none bg-transparent pointer-events-none custom-slider"
+                  className="custom-slider pointer-events-none absolute -top-1.25 w-full appearance-none bg-transparent"
                 />
               </div>
             </div>
@@ -182,7 +182,7 @@ export function ProductFilterPanel() {
 
           {/* Harga (Rp) Dual Slider */}
           <div>
-            <h3 className="font-medium mb-3 text-sm text-foreground">
+            <h3 className="text-foreground mb-3 text-sm font-medium">
               Harga (Rp)
             </h3>
             <div className="flex flex-col space-y-4">
@@ -191,19 +191,19 @@ export function ProductFilterPanel() {
                   type="text"
                   value={sliders.priceMin.toLocaleString("id-ID")}
                   readOnly
-                  className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
+                  className="border-border bg-background text-foreground pointer-events-none w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
                 />
                 <span className="text-muted-foreground">-</span>
                 <input
                   type="text"
                   value={sliders.priceMax.toLocaleString("id-ID")}
                   readOnly
-                  className="w-full border border-border bg-background rounded-md px-3 py-2 text-sm focus:outline-none text-foreground pointer-events-none"
+                  className="border-border bg-background text-foreground pointer-events-none w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
                 />
               </div>
-              <div className="relative w-full h-1.5 bg-accent rounded-full mt-2">
+              <div className="bg-accent relative mt-2 h-1.5 w-full rounded-full">
                 <div
-                  className="absolute h-1.5 bg-primary rounded-full transition-all"
+                  className="bg-primary absolute h-1.5 rounded-full transition-all"
                   style={{
                     left: `${(sliders.priceMin / maxPrice) * 100}%`,
                     right: `${100 - (sliders.priceMax / maxPrice) * 100}%`,
@@ -217,7 +217,7 @@ export function ProductFilterPanel() {
                   value={sliders.priceMin}
                   step="5000"
                   onChange={handleSliderChange}
-                  className="absolute w-full -top-1.25 appearance-none bg-transparent pointer-events-none custom-slider"
+                  className="custom-slider pointer-events-none absolute -top-1.25 w-full appearance-none bg-transparent"
                 />
                 <input
                   type="range"
@@ -227,13 +227,13 @@ export function ProductFilterPanel() {
                   value={sliders.priceMax}
                   step="5000"
                   onChange={handleSliderChange}
-                  className="absolute w-full -top-1.25 appearance-none bg-transparent pointer-events-none custom-slider"
+                  className="custom-slider pointer-events-none absolute -top-1.25 w-full appearance-none bg-transparent"
                 />
               </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-border flex flex-col gap-2">
+          <div className="border-border flex flex-col gap-2 border-t pt-4">
             <Button
               type="submit"
               variant="default"

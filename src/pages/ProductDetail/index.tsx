@@ -127,7 +127,7 @@ export default function ProductDetail() {
         </Link>
       </Button>
 
-      <div className="bg-card border-border overflow-hidden rounded-2xl border shadow-sm">
+      <div className="border-border overflow-hidden rounded-2xl border bg-white shadow-sm">
         <div className="flex flex-col md:flex-row">
           {/* Product Image */}
           <div className="bg-background border-border flex h-120 items-center justify-center overflow-hidden border-b md:h-auto md:w-1/2 md:border-r md:border-b-0">
