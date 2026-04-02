@@ -1,8 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useCallback,
-} from "react";
+import React, { createContext, useContext, useCallback } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchClient } from "../common/api";
 import type { components } from "@/schema";
@@ -46,7 +42,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user: user || null, isAuthenticated: !!user, isLoading, invalidateAuth, logout }}
+      value={{
+        user: user || null,
+        isAuthenticated: !!user,
+        isLoading,
+        invalidateAuth,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
