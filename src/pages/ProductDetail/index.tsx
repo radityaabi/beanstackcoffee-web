@@ -130,9 +130,9 @@ export default function ProductDetail() {
       </Button>
 
       <div className="border-border overflow-hidden rounded-2xl border bg-white shadow-sm">
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col lg:flex-row lg:items-start divide-y divide-border lg:divide-x lg:divide-y-0">
           {/* Product Image */}
-          <div className="bg-background border-border flex h-120 items-center justify-center overflow-hidden border-b md:h-auto md:w-1/2 md:border-r md:border-b-0">
+          <div className="flex aspect-square w-full shrink-0 items-center justify-center overflow-hidden bg-white lg:w-1/2 lg:sticky lg:top-8">
             <img
               src={getPreviewUrl(
                 product.imageUrl ||
@@ -145,7 +145,7 @@ export default function ProductDetail() {
           </div>
 
           {/* Product Info */}
-          <div className="flex flex-col p-8 md:w-1/2 md:p-12">
+          <div className="flex flex-col p-8 lg:w-1/2 lg:p-12">
             <div className="mb-2">
               <Badge
                 variant="secondary"
