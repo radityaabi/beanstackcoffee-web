@@ -60,7 +60,7 @@ export default function ProductDetail() {
             ));
             updateQuantity(1);
           },
-          onError: () => {
+          onError: (error) => {
             if (
               error instanceof Error &&
               error.message.includes("Unauthorized")
@@ -75,7 +75,9 @@ export default function ProductDetail() {
                 <div className="border-border flex items-center gap-2 rounded-md border bg-white p-2">
                   <XCircleIcon className="text-destructive size-4" />
                   <span className="text-foreground text-sm">
-                    Gagal menambahkan ke keranjang.
+                    {error instanceof Error
+                      ? error.message
+                      : "Gagal menambahkan ke keranjang."}
                   </span>
                 </div>
               ));
@@ -214,8 +216,6 @@ export default function ProductDetail() {
                         const num = parseInt(displayQuantity, 10);
                         if (isNaN(num) || num < 1) {
                           updateQuantity(1);
-                        } else if (product && num > product.stockQuantity) {
-                          updateQuantity(product.stockQuantity);
                         } else {
                           updateQuantity(num);
                         }

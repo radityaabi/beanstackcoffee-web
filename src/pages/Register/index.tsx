@@ -23,6 +23,7 @@ import {
 const Register = () => {
   const registerMutation = useRegister();
   const [state, setState] = useState({
+    name: "",
     username: "",
     email: "",
     password: "",
@@ -37,6 +38,7 @@ const Register = () => {
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     registerMutation.mutate({
+      name: state.name,
       username: state.username,
       email: state.email,
       password: state.password,
@@ -71,6 +73,24 @@ const Register = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1">
+              <Label htmlFor="name">Nama Lengkap</Label>
+              <div className="relative">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <UserIcon className="text-muted-foreground h-5 w-5" />
+                </div>
+                <Input
+                  id="name"
+                  type="text"
+                  required
+                  value={state.name}
+                  onChange={handleChange}
+                  className="rounded-xl bg-white pl-10 focus:bg-amber-50"
+                  placeholder="your name"
+                />
+              </div>
+            </div>
+
             <div className="space-y-1">
               <Label htmlFor="username">Username</Label>
               <div className="relative">
