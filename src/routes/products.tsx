@@ -6,7 +6,7 @@ import {
   CaretRightIcon,
 } from "@phosphor-icons/react";
 import { useProducts } from "@/modules/product/hooks";
-import { ProductFilterPanel } from "./components/ProductFilterPanel";
+import { ProductFilterPanel } from "@/components/product/product-filter-panel";
 import { formatRupiah, getPreviewUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +14,7 @@ import type { components } from "@/schema";
 
 type Product = components["schemas"]["Product"];
 
-export default function Products() {
+export function ProductsRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const searchFilter = searchParams.get("search") || "";

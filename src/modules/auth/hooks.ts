@@ -29,7 +29,7 @@ export const useLogin = () => {
     },
     onSuccess: () => {
       invalidateAuth();
-      navigate("/");
+      navigate("/dashboard");
     },
   });
 };

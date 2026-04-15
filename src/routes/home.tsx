@@ -5,7 +5,7 @@ import { formatRupiah, getPreviewUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-export default function Home() {
+export function HomeRoute() {
   const { data: responseData, isLoading } = useProducts({ limit: "4" });
   const productList = Array.isArray(responseData?.data)
     ? responseData.data

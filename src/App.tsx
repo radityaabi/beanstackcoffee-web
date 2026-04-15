@@ -1,14 +1,15 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { MainLayout } from "./components/layout/MainLayout";
 import { AuthProvider } from "./modules/auth/context";
-
-import Home from "./pages/Home";
-import Products from "./pages/Products";
-import ProductDetail from "./pages/ProductDetail";
-import Cart from "./pages/Cart";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 import ScrollToTop from "./components/layout/ScrollToTop";
+
+import { HomeRoute } from "./routes/home";
+import { ProductsRoute } from "./routes/products";
+import { ProductDetailRoute } from "./routes/product-detail";
+import { CartRoute } from "./routes/cart";
+import { LoginRoute } from "./routes/login";
+import { RegisterRoute } from "./routes/register";
+import { DashboardRoute } from "./routes/dashboard";
 
 export function App() {
   return (
@@ -16,13 +17,14 @@ export function App() {
       <AuthProvider>
         <ScrollToTop />
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<LoginRoute />} />
+          <Route path="/register" element={<RegisterRoute />} />
           <Route element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/products/:slug" element={<ProductDetail />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route path="/" element={<HomeRoute />} />
+            <Route path="/dashboard" element={<DashboardRoute />} />
+            <Route path="/products" element={<ProductsRoute />} />
+            <Route path="/products/:slug" element={<ProductDetailRoute />} />
+            <Route path="/cart" element={<CartRoute />} />
           </Route>
         </Routes>
       </AuthProvider>

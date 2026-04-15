@@ -8,6 +8,7 @@ import {
   TiktokLogoIcon,
   SignOutIcon,
   UserCircleIcon,
+  GaugeIcon,
 } from "@phosphor-icons/react";
 import { useCart } from "@/modules/cart/hooks";
 import { useAuth } from "@/modules/auth/hooks";
@@ -17,7 +18,6 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
@@ -103,20 +103,33 @@ export function MainLayout() {
               </Link>
               <div className="border-border hidden items-center space-x-2 border-l pl-4 md:flex">
                 {isAuthenticated ? (
-                  <>
-                    <span className="text-foreground mr-2 flex items-center gap-1.5 text-sm font-medium">
-                      <UserCircleIcon className="h-5 w-5" />
-                      {user?.username}
-                    </span>
-                    <Button
-                      variant="ghost"
-                      onClick={logout}
-                      className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                    >
-                      <SignOutIcon className="mr-1.5 h-4 w-4" />
-                      Keluar
-                    </Button>
-                  </>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="text-foreground hover:text-primary flex cursor-pointer items-center gap-1.5 text-sm font-medium transition outline-none">
+                        <UserCircleIcon className="h-5 w-5" />
+                        {user?.username}
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="mt-2 w-48">
+                      <DropdownMenuItem asChild>
+                        <Link
+                          to="/dashboard"
+                          className="text-foreground w-full cursor-pointer"
+                        >
+                          <GaugeIcon className="mr-2 h-4 w-4" />
+                          Dasbor
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onClick={logout}
+                        className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
+                      >
+                        <SignOutIcon className="mr-2 h-4 w-4" />
+                        Keluar
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 ) : (
                   <>
                     <Button variant="ghost" asChild>
@@ -142,19 +155,22 @@ export function MainLayout() {
                   <DropdownMenuContent align="end" className="mt-2 w-48">
                     {isAuthenticated ? (
                       <>
-                        <DropdownMenuLabel className="font-normal">
-                          <span className="text-foreground flex items-center gap-1.5 text-sm font-medium">
-                            <UserCircleIcon className="h-4 w-4" />
-                            {user?.username}
-                          </span>
-                        </DropdownMenuLabel>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            to="/dashboard"
+                            className="text-foreground w-full cursor-pointer"
+                          >
+                            <GaugeIcon className="mr-2 h-4 w-4" />
+                            Dasbor
+                          </Link>
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={logout}
                           className="text-destructive focus:text-destructive focus:bg-destructive/10 cursor-pointer"
                         >
                           <SignOutIcon className="mr-2 h-4 w-4" />
-                          Logout
+                          Keluar
                         </DropdownMenuItem>
                       </>
                     ) : (

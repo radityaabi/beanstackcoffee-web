@@ -1,13 +1,11 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   EnvelopeSimpleIcon,
   LockKeyIcon,
   EyeSlashIcon,
   EyeIcon,
 } from "@phosphor-icons/react";
-import { useLogin } from "@/modules/auth/hooks";
 import { useState } from "react";
-import type { components } from "@/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,11 +18,14 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 
-const Login = () => {
-  const loginMutation = useLogin();
-  const location = useLocation();
-  const successMessage = (location.state as { message?: string })?.message;
+interface LoginFormProps {
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  isPending: boolean;
+  error: Error | null;
+  successMessage?: string;
+}
 
+export function LoginForm({ handleSubmit, isPending, error, successMessage }: LoginFormProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -54,21 +55,13 @@ const Login = () => {
             </div>
           )}
 
-          {loginMutation.error && (
+          {error && (
             <div className="text-destructive mb-6 p-4 text-center text-sm">
-              {loginMutation.error.message}
+              {error.message}
             </div>
           )}
 
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              const formData = new FormData(event.currentTarget);
-              const payload = Object.fromEntries(formData) as components["schemas"]["Login"];
-              loginMutation.mutate(payload);
-            }}
-            className="space-y-4"
-          >
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1">
               <Label htmlFor="email">Alamat Email</Label>
               <div className="relative">
@@ -116,11 +109,11 @@ const Login = () => {
 
             <Button
               type="submit"
-              disabled={loginMutation.isPending}
+              disabled={isPending}
               className="mt-4 w-full rounded-xl"
               size="lg"
             >
-              {loginMutation.isPending ? "Masuk ke Akun..." : "Masuk ke Akun"}
+              {isPending ? "Masuk ke Akun..." : "Masuk ke Akun"}
             </Button>
           </form>
         </CardContent>
@@ -139,6 +132,4 @@ const Login = () => {
       </Card>
     </div>
   );
-};
-
-export default Login;
+}

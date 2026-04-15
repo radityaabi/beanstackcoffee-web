@@ -6,9 +6,7 @@ import {
   EyeSlashIcon,
   EyeIcon,
 } from "@phosphor-icons/react";
-import { useRegister } from "@/modules/auth/hooks";
 import { useState } from "react";
-import type { components } from "@/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,8 +19,13 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 
-const Register = () => {
-  const registerMutation = useRegister();
+interface RegisterFormProps {
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  isPending: boolean;
+  error: Error | null;
+}
+
+export function RegisterForm({ handleSubmit, isPending, error }: RegisterFormProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -46,21 +49,13 @@ const Register = () => {
             Daftar Akun Baru
           </CardTitle>
 
-          {registerMutation.error && (
+          {error && (
             <div className="text-destructive mb-6 p-4 text-center text-sm">
-              {registerMutation.error.message}
+              {error.message}
             </div>
           )}
 
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              const formData = new FormData(event.currentTarget);
-              const payload = Object.fromEntries(formData) as components["schemas"]["Register"];
-              registerMutation.mutate(payload);
-            }}
-            className="space-y-4"
-          >
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1">
               <Label htmlFor="name">Nama Lengkap</Label>
               <div className="relative">
@@ -147,11 +142,11 @@ const Register = () => {
 
             <Button
               type="submit"
-              disabled={registerMutation.isPending}
+              disabled={isPending}
               className="mt-4 w-full rounded-xl"
               size="lg"
             >
-              {registerMutation.isPending ? "Buat Akun..." : "Buat Akun"}
+              {isPending ? "Buat Akun..." : "Buat Akun"}
             </Button>
           </form>
         </CardContent>
@@ -170,6 +165,4 @@ const Register = () => {
       </Card>
     </div>
   );
-};
-
-export default Register;
+}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   ShoppingCartIcon,
   MinusIcon,
@@ -11,14 +11,13 @@ import { useProduct } from "@/modules/product/hooks";
 import { useAddToCart } from "@/modules/cart/hooks";
 import { useAuth } from "@/modules/auth/hooks";
 import { formatRupiah, getPreviewUrl } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/components/ui/spinner";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 
-export default function ProductDetail() {
+export function ProductDetailRoute() {
   const { slug } = useParams<{ slug: string }>();
   const { data: product, isLoading, error } = useProduct(slug || "");
   const { mutate: addToCart, isPending: isAdding } = useAddToCart();

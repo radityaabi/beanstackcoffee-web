@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-export default function Cart() {
+export function CartRoute() {
   const { isAuthenticated } = useAuth();
   const { data: cart, isLoading, error } = useCart(isAuthenticated);
   const { mutate: updateItem } = useUpdateCartItem();
@@ -108,7 +108,7 @@ export default function Cart() {
             <div className="border-border overflow-hidden rounded-xl border bg-gray-50 shadow-sm">
               <div className="border-border bg-muted/50 text-muted-foreground hidden grid-cols-12 gap-4 border-b p-4 text-sm font-medium md:grid">
                 <div className="col-span-6">Produk</div>
-                <div className="col-span-3 text-center">Harga</div>
+                <div className="col-span-3 text-center">Subtotal</div>
                 <div className="col-span-2 text-center">Jumlah</div>
                 <div className="col-span-1 text-right"></div>
               </div>
@@ -140,14 +140,17 @@ export default function Cart() {
                         <p className="text-muted-foreground mt-1 text-xs uppercase">
                           {item.product?.type} • {item.product?.weight}g
                         </p>
-                        <div className="text-primary mt-2 font-medium md:hidden">
+                        <p className="text-primary mt-1 text-sm font-medium">
                           {formatRupiah(item.product?.price || 0)}
+                        </p>
+                        <div className="text-foreground mt-1 text-sm font-semibold md:hidden">
+                          Subtotal: {formatRupiah(item.subTotalPrice)}
                         </div>
                       </div>
                     </div>
 
-                    <div className="text-primary col-span-3 hidden text-center font-medium md:block">
-                      {formatRupiah(item.product?.price || 0)}
+                    <div className="text-foreground col-span-3 hidden text-center font-semibold md:block">
+                      {formatRupiah(item.subTotalPrice)}
                     </div>
 
                     <div className="col-span-2 flex items-center md:justify-center">
