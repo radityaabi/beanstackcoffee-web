@@ -7,6 +7,7 @@ import {
 } from "@phosphor-icons/react";
 import { useLogin } from "@/modules/auth/hooks";
 import { useState } from "react";
+import type { components } from "@/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,16 +25,7 @@ const Login = () => {
   const location = useLocation();
   const successMessage = (location.state as { message?: string })?.message;
 
-  const [state, setState] = useState({
-    email: "",
-    password: "",
-    showPassword: false,
-  });
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = event.target;
-    setState((prev) => ({ ...prev, [id]: value }));
-  };
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="bg-background flex min-h-screen flex-col items-center justify-center p-4">
@@ -71,10 +63,9 @@ const Login = () => {
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              loginMutation.mutate({
-                email: state.email,
-                password: state.password,
-              });
+              const formData = new FormData(event.currentTarget);
+              const payload = Object.fromEntries(formData) as components["schemas"]["Login"];
+              loginMutation.mutate(payload);
             }}
             className="space-y-4"
           >
@@ -86,10 +77,9 @@ const Login = () => {
                 </div>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   required
-                  value={state.email}
-                  onChange={handleInputChange}
                   className="rounded-xl bg-white pl-10 focus:bg-amber-50"
                   placeholder="you@example.com"
                 />
@@ -104,24 +94,18 @@ const Login = () => {
                 </div>
                 <Input
                   id="password"
-                  type={state.showPassword ? "text" : "password"}
+                  name="password"
+                  type={showPassword ? "text" : "password"}
                   required
-                  value={state.password}
-                  onChange={handleInputChange}
                   className="rounded-xl bg-white pr-10 pl-10 focus:bg-amber-50"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
-                  onClick={() =>
-                    setState((prev) => ({
-                      ...prev,
-                      showPassword: !prev.showPassword,
-                    }))
-                  }
+                  onClick={() => setShowPassword((prev) => !prev)}
                   className="text-muted-foreground hover:text-foreground absolute inset-y-0 right-0 flex items-center pr-3"
                 >
-                  {state.showPassword ? (
+                  {showPassword ? (
                     <EyeSlashIcon className="h-5 w-5" />
                   ) : (
                     <EyeIcon className="h-5 w-5" />
