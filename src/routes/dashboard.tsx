@@ -63,10 +63,10 @@ export function DashboardRoute() {
 
       {/* Stats cards */}
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card className="border-border overflow-hidden">
+        <Card className="border-border overflow-hidden bg-gray-50 shadow-sm">
           <CardHeader className="flex flex-row items-center gap-3 pb-2">
-            <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
-              <ShoppingCartIcon weight="duotone" className="text-primary h-5 w-5" />
+            <div className="bg-blue-100 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg">
+              <ShoppingCartIcon weight="duotone" className="text-blue-700 h-5 w-5" />
             </div>
             <div>
               <CardDescription className="text-xs">Keranjang</CardDescription>
@@ -91,7 +91,7 @@ export function DashboardRoute() {
           </CardContent>
         </Card>
 
-        <Card className="border-border overflow-hidden">
+        <Card className="border-border overflow-hidden bg-gray-50 shadow-sm">
           <CardHeader className="flex flex-row items-center gap-3 pb-2">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-amber-100">
               <CoffeeIcon weight="duotone" className="h-5 w-5 text-amber-700" />
@@ -114,7 +114,7 @@ export function DashboardRoute() {
           </CardContent>
         </Card>
 
-        <Card className="border-border overflow-hidden sm:col-span-2 lg:col-span-1">
+        <Card className="border-border overflow-hidden bg-gray-50 shadow-sm sm:col-span-2 lg:col-span-1">
           <CardHeader className="flex flex-row items-center gap-3 pb-2">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-100">
               <UserIcon weight="duotone" className="h-5 w-5 text-emerald-700" />
@@ -139,10 +139,10 @@ export function DashboardRoute() {
 
       {/* Cart items preview */}
       {totalItems > 0 && (
-        <Card className="border-border">
+        <Card className="border-border bg-gray-50 shadow-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
-              <PackageIcon weight="duotone" className="text-primary h-5 w-5" />
+              <PackageIcon weight="duotone" className="text-muted-foreground h-5 w-5" />
               Item di Keranjang
             </CardTitle>
           </CardHeader>
@@ -151,22 +151,35 @@ export function DashboardRoute() {
               {cart?.items?.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0"
+                  className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0 sm:gap-4"
                 >
-                  <div className="min-w-0">
-                    <Link
-                      to={`/products/${item.product.slug}`}
-                      className="text-foreground hover:text-primary truncate text-sm font-medium transition"
-                    >
-                      {item.product.name}
-                    </Link>
-                    <p className="text-muted-foreground text-xs">
-                      {item.quantity} &times; {formatRupiah(item.product.price)}
-                    </p>
+                  <div className="flex min-w-0 flex-1 items-center gap-3">
+                    <div className="bg-background border-border flex h-12 w-12 shrink-0 items-center justify-center rounded-md border p-1 shadow-sm">
+                      <img
+                        src={
+                          item.product?.imageUrl ||
+                          "https://2xm7hdufl9.ucarecdn.net/3cd44a25-d8fc-4d52-a977-fc566af061c2/-/scale_crop/300x300/"
+                        }
+                        alt={item.product?.name}
+                        className="max-h-full object-contain"
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <Link
+                        to={`/products/${item.product.slug}`}
+                        className="text-foreground hover:text-primary block truncate text-sm font-medium transition"
+                        title={item.product.name}
+                      >
+                        {item.product.name}
+                      </Link>
+                      <p className="text-muted-foreground mt-0.5 text-xs">
+                        {item.quantity} &times; {formatRupiah(item.product.price)}
+                      </p>
+                    </div>
                   </div>
-                  <span className="text-foreground shrink-0 text-sm font-semibold">
-                    {formatRupiah(item.subTotalPrice)}
-                  </span>
+                  <div className="text-foreground shrink-0 text-right text-sm font-semibold">
+                    {formatRupiah(item.quantity * item.product.price)}
+                  </div>
                 </div>
               ))}
             </div>
@@ -183,7 +196,7 @@ export function DashboardRoute() {
 
       {/* Empty cart state */}
       {totalItems === 0 && (
-        <Card className="border-border">
+        <Card className="border-border bg-gray-50 shadow-sm">
           <CardContent className="flex flex-col items-center py-12 text-center">
             <ShoppingCartIcon weight="duotone" className="text-muted-foreground/40 mb-4 h-16 w-16" />
             <p className="text-muted-foreground mb-4 text-sm">
