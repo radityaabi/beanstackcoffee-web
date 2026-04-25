@@ -1,17 +1,45 @@
-export { useAuth, AuthProvider, AuthContext } from "./context";
-export type { AuthUser } from "./context";
-
-import { useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { fetchClient } from "../common/api";
-import { useAuth } from "./context";
 import type { components } from "@/schema";
+
+export type AuthUser = components["schemas"]["MeResponse"];
 
 type LoginPayload = components["schemas"]["Login"];
 type RegisterPayload = components["schemas"]["Register"];
 
+const AUTH_QUERY_KEY = ["auth", "me"] as const;
+
+export const useAuth = () => {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const { data: user, isLoading } = useQuery({
+    queryKey: AUTH_QUERY_KEY,
+    queryFn: async () => {
+      const { data } = await fetchClient.GET("/auth/me");
+      return data ?? null;
+    },
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const logout = () => {
+    fetchClient.POST("/auth/logout").catch(() => {});
+    queryClient.setQueryData(AUTH_QUERY_KEY, null);
+    if (window.location.pathname !== "/login") navigate("/login");
+  };
+
+  return {
+    user: user ?? null,
+    isAuthenticated: !!user,
+    isLoading,
+    logout,
+  };
+};
+
 export const useLogin = () => {
-  const { invalidateAuth } = useAuth();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   return useMutation({
@@ -28,7 +56,7 @@ export const useLogin = () => {
       return data;
     },
     onSuccess: () => {
-      invalidateAuth();
+      queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEY });
       navigate("/dashboard");
     },
   });
