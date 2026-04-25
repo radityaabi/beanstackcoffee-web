@@ -32,7 +32,8 @@ export const useAddToCart = () => {
 
       if (error) {
         const errObj = error as Record<string, unknown>;
-        const message = (errObj?.error as string) || (errObj?.message as string);
+        const message =
+          (errObj?.error as string) || (errObj?.message as string);
         throw new Error(message || "Failed to add to cart");
       }
 
@@ -63,8 +64,9 @@ export const useUpdateCartItem = () => {
       });
 
       if (error) {
-        const errObj = error as Record<string, unknown>;
-        const message = (errObj?.error as string) || (errObj?.message as string);
+        const errorObject = error as Record<string, unknown>;
+        const message =
+          (errorObject?.error as string) || (errorObject?.message as string);
         throw new Error(message || "Failed to update cart item");
       }
 
@@ -88,8 +90,9 @@ export const useRemoveFromCart = () => {
       });
 
       if (error) {
-        const errObj = error as Record<string, unknown>;
-        const message = (errObj?.error as string) || (errObj?.message as string);
+        const errorObject = error as Record<string, unknown>;
+        const message =
+          (errorObject?.error as string) || (errorObject?.message as string);
         throw new Error(message || "Failed to remove cart item");
       }
 

@@ -297,7 +297,7 @@ export function CartRoute() {
             <AlertDialogDescription>
               Apakah Anda yakin ingin menghapus produk{" "}
               <span className="text-foreground font-semibold">
-                {cart?.items?.find((i) => i.id === itemToDelete)?.product
+                {cart?.items?.find((item) => item.id === itemToDelete)?.product
                   ?.name || "ini"}
               </span>{" "}
               dari keranjang belanja Anda?
