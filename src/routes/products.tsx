@@ -18,7 +18,7 @@ export function ProductsRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const searchFilter = searchParams.get("search") || "";
-  const typeFilter = searchParams.get("type") || "";
+  const categoryFilter = searchParams.get("categoryId") || "";
   const sortByParam = searchParams.get("sortBy") || "";
   const sortOrderParam = searchParams.get("sortOrder") || "";
   const minWeightParam = searchParams.get("minWeight") || "0";
@@ -29,7 +29,7 @@ export function ProductsRoute() {
 
   const { data: responseData, isLoading } = useProducts({
     search: searchFilter || undefined,
-    type: typeFilter || undefined,
+    categoryId: categoryFilter || undefined,
     minWeight: minWeightParam !== "0" ? minWeightParam : undefined,
     maxWeight: maxWeightParam !== "2000" ? maxWeightParam : undefined,
     minPrice: minPriceParam !== "0" ? minPriceParam : undefined,
@@ -66,7 +66,7 @@ export function ProductsRoute() {
             <p className="text-muted-foreground text-sm">
               Menampilkan {products.length} produk{" "}
               {searchFilter && `untuk "${searchFilter}"`}
-              {typeFilter && ` dengan jenis ${typeFilter}`}
+              {categoryFilter && ` dengan kategori terpilih`}
             </p>
           </div>
 
@@ -114,7 +114,7 @@ export function ProductsRoute() {
                       variant="secondary"
                       className="bg-card/90 text-primary pointer-events-none absolute top-2 left-2 z-10 text-[10px] font-bold uppercase shadow-sm backdrop-blur-sm sm:top-3 sm:left-3 sm:text-xs"
                     >
-                      {product.type}
+                      {product.category.name}
                     </Badge>
                   </div>
                   <div className="flex grow flex-col p-3 sm:p-4">

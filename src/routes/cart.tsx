@@ -138,7 +138,7 @@ export function CartRoute() {
                           {item.product?.name}
                         </Link>
                         <p className="text-muted-foreground mt-1 text-xs uppercase">
-                          {item.product?.type} • {item.product?.weight}g
+                          {item.product?.category?.name} • {item.product?.weight}g
                         </p>
                         <p className="text-primary mt-1 text-sm font-medium">
                           {formatRupiah(item.product?.price || 0)}

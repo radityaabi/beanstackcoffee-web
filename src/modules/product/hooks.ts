@@ -13,7 +13,7 @@ export const useProducts = (query?: GetProductsQuery) => {
     queryKey: [
       "products",
       query?.search,
-      query?.type,
+      query?.categoryId,
       query?.sortBy,
       query?.sortOrder,
       query?.minWeight,
@@ -180,8 +180,8 @@ export const useProductFilters = () => {
         if (sortOrder) newParams.set("sortOrder", sortOrder);
       }
 
-      const types = formData.getAll("type") as string[];
-      if (types.length > 0) newParams.set("type", types.join(","));
+      const categories = formData.getAll("categoryId") as string[];
+      if (categories.length > 0) newParams.set("categoryId", categories.join(","));
 
       const {
         weightMin: weightMin,

@@ -37,8 +37,6 @@ export function DashboardRoute() {
   }
 
   const totalItems = cart?.items?.length ?? 0;
-  const totalQuantity =
-    cart?.items?.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
   const totalPrice = cart?.totalPrice ?? 0;
 
   const memberSince = user?.createdAt
@@ -77,7 +75,7 @@ export function DashboardRoute() {
           </CardHeader>
           <CardContent className="pt-0">
             <p className="text-muted-foreground text-sm">
-              {totalQuantity} item &middot;{" "}
+              {totalItems} item &middot;{" "}
               <span className="text-primary font-semibold">
                 {formatRupiah(totalPrice)}
               </span>
@@ -178,7 +176,7 @@ export function DashboardRoute() {
                     </div>
                   </div>
                   <div className="text-foreground shrink-0 text-right text-sm font-semibold">
-                    {formatRupiah(item.quantity * item.product.price)}
+                    {formatRupiah(item.subTotalPrice)}
                   </div>
                 </div>
               ))}

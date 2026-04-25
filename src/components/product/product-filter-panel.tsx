@@ -1,10 +1,7 @@
 import { FunnelIcon, X } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { useProductFilters } from "@/modules/product/hooks";
-import type { components } from "@/schema";
-
-type Product = components["schemas"]["Product"];
-const COFFEE_TYPES: Product["type"][] = ["ARABICA", "ROBUSTA", "BLEND"];
+import { useCategories } from "@/modules/category/hooks";
 
 export function ProductFilterPanel() {
   const {
@@ -17,11 +14,13 @@ export function ProductFilterPanel() {
     handleResetFilter,
   } = useProductFilters();
 
+  const { data: categories = [] } = useCategories();
+
   const maxPrice = 2000000;
   const maxWeight = 2000;
 
-  const typeFilter = searchParams.get("type") || "";
-  const typeArray = typeFilter ? typeFilter.split(",") : [];
+  const categoryFilter = searchParams.get("categoryId") || "";
+  const categoryArray = categoryFilter ? categoryFilter.split(",") : [];
 
   return (
     <div className="w-full shrink-0 md:w-64">
@@ -107,20 +106,20 @@ export function ProductFilterPanel() {
               Jenis Kopi
             </h3>
             <div className="space-y-2">
-              {COFFEE_TYPES.map((type) => (
+              {categories.map((cat) => (
                 <label
-                  key={type}
+                  key={cat.id}
                   className="group flex cursor-pointer items-center"
                 >
                   <input
                     type="checkbox"
-                    name="type"
-                    value={type}
+                    name="categoryId"
+                    value={cat.id}
                     className="border-border text-primary focus:ring-primary bg-background h-4 w-4 cursor-pointer rounded transition"
-                    defaultChecked={typeArray.includes(type)}
+                    defaultChecked={categoryArray.includes(cat.id)}
                   />
                   <span className="text-muted-foreground group-hover:text-foreground ml-2 text-sm transition">
-                    {type}
+                    {cat.name}
                   </span>
                 </label>
               ))}

@@ -150,7 +150,7 @@ export function ProductDetailRoute() {
                 variant="secondary"
                 className="text-primary px-3 py-1 font-bold tracking-wider uppercase"
               >
-                {product.type}
+                {product.category.name}
               </Badge>
             </div>
 

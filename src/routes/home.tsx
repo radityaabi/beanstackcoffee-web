@@ -75,7 +75,7 @@ export function HomeRoute() {
                     variant="secondary"
                     className="text-primary bg-card/90 pointer-events-none absolute top-2 left-2 z-10 text-[10px] font-bold uppercase shadow-sm backdrop-blur-sm sm:top-3 sm:left-3 sm:text-xs"
                   >
-                    {product.type}
+                    {product.category.name}
                   </Badge>
                 </div>
                 <div className="flex grow flex-col p-3 sm:p-4">
