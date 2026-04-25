@@ -129,9 +129,9 @@ export function ProductDetailRoute() {
       </Button>
 
       <div className="border-border overflow-hidden rounded-2xl border bg-white shadow-sm">
-        <div className="flex flex-col lg:flex-row lg:items-start divide-y divide-border lg:divide-x lg:divide-y-0">
+        <div className="divide-border flex flex-col divide-y lg:flex-row lg:items-start lg:divide-x lg:divide-y-0">
           {/* Product Image */}
-          <div className="flex aspect-square w-full shrink-0 items-center justify-center overflow-hidden bg-white lg:w-1/2 lg:sticky lg:top-8">
+          <div className="flex aspect-square w-full shrink-0 items-center justify-center overflow-hidden bg-white lg:sticky lg:top-8 lg:w-1/2">
             <img
               src={getPreviewUrl(
                 product.imageUrl ||
@@ -205,18 +205,18 @@ export function ProductDetailRoute() {
                       type="text"
                       inputMode="numeric"
                       value={displayQuantity}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        if (val === "" || /^\d*$/.test(val)) {
-                          setDisplayQuantity(val);
+                      onChange={(event) => {
+                        const value = event.target.value;
+                        if (value === "" || /^\d*$/.test(value)) {
+                          setDisplayQuantity(value);
                         }
                       }}
                       onBlur={() => {
-                        const num = parseInt(displayQuantity, 10);
-                        if (isNaN(num) || num < 1) {
+                        const number = parseInt(displayQuantity, 10);
+                        if (isNaN(number) || number < 1) {
                           updateQuantity(1);
                         } else {
-                          updateQuantity(num);
+                          updateQuantity(number);
                         }
                       }}
                       onKeyDown={(event) => {

@@ -138,7 +138,8 @@ export function CartRoute() {
                           {item.product?.name}
                         </Link>
                         <p className="text-muted-foreground mt-1 text-xs uppercase">
-                          {item.product?.category?.name} • {item.product?.weight}g
+                          {item.product?.category?.name} •{" "}
+                          {item.product?.weight}g
                         </p>
                         <p className="text-primary mt-1 text-sm font-medium">
                           {formatRupiah(item.product?.price || 0)}
@@ -169,10 +170,10 @@ export function CartRoute() {
                           type="text"
                           inputMode="numeric"
                           value={getDisplayQuantity(item.id, item.quantity)}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            if (val === "" || /^\d*$/.test(val)) {
-                              setDisplayQuantity(item.id, val);
+                          onChange={(event) => {
+                            const value = event.target.value;
+                            if (value === "" || /^\d*$/.test(value)) {
+                              setDisplayQuantity(item.id, value);
                             }
                           }}
                           onBlur={() => {
@@ -180,18 +181,18 @@ export function CartRoute() {
                               item.id,
                               item.quantity,
                             );
-                            const num = parseInt(raw, 10);
+                            const number = parseInt(raw, 10);
                             const maxQty =
                               item.product?.stockQuantity ?? Infinity;
-                            if (isNaN(num) || num < 1) {
+                            if (isNaN(number) || number < 1) {
                               handleUpdateQuantity(item.id, 1);
                               setDisplayQuantity(item.id, "1");
-                            } else if (num > maxQty) {
+                            } else if (number > maxQty) {
                               handleUpdateQuantity(item.id, maxQty);
                               setDisplayQuantity(item.id, String(maxQty));
                             } else {
-                              handleUpdateQuantity(item.id, num);
-                              setDisplayQuantity(item.id, String(num));
+                              handleUpdateQuantity(item.id, number);
+                              setDisplayQuantity(item.id, String(number));
                             }
                           }}
                           onKeyDown={(event) => {
