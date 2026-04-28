@@ -164,6 +164,16 @@ export const useProductFilters = () => {
     [],
   );
 
+  const handleWeightSliderChange = useCallback((values: number[]) => {
+    dispatch({ type: "SET_SLIDER", name: "weightMin", value: values[0] });
+    dispatch({ type: "SET_SLIDER", name: "weightMax", value: values[1] });
+  }, []);
+
+  const handlePriceSliderChange = useCallback((values: number[]) => {
+    dispatch({ type: "SET_SLIDER", name: "priceMin", value: values[0] });
+    dispatch({ type: "SET_SLIDER", name: "priceMax", value: values[1] });
+  }, []);
+
   const handleApplyFilter = useCallback(
     (event: React.ChangeEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -221,6 +231,8 @@ export const useProductFilters = () => {
     isFilterOpen: filterState.isFilterOpen,
     toggleFilterOpen: () => dispatch({ type: "TOGGLE_FILTER_OPEN" }),
     handleSliderChange,
+    handleWeightSliderChange,
+    handlePriceSliderChange,
     handleApplyFilter,
     handleResetFilter,
   };

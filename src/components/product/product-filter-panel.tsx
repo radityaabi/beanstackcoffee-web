@@ -1,5 +1,23 @@
+import { useState } from "react";
 import { FunnelIcon, X } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Field,
+  FieldLabel,
+  FieldGroup,
+} from "@/components/ui/field";
 import { useProductFilters } from "@/modules/product/hooks";
 import { useCategories } from "@/modules/category/hooks";
 
@@ -9,7 +27,8 @@ export function ProductFilterPanel() {
     sliders,
     isFilterOpen,
     toggleFilterOpen,
-    handleSliderChange,
+    handleWeightSliderChange,
+    handlePriceSliderChange,
     handleApplyFilter,
     handleResetFilter,
   } = useProductFilters();
@@ -21,6 +40,19 @@ export function ProductFilterPanel() {
 
   const categoryFilter = searchParams.get("categoryId") || "";
   const categoryArray = categoryFilter ? categoryFilter.split(",") : [];
+
+  const defaultSort = searchParams.get("sortBy")
+    ? `${searchParams.get("sortBy")}-${searchParams.get("sortOrder")}`
+    : "";
+  const [sortValue, setSortValue] = useState(defaultSort);
+
+  const [checkedCategories, setCheckedCategories] = useState<string[]>(categoryArray);
+
+  const handleCategoryToggle = (catId: string, checked: boolean) => {
+    setCheckedCategories((prev) =>
+      checked ? [...prev, catId] : prev.filter((id) => id !== catId),
+    );
+  };
 
   return (
     <div className="w-full shrink-0 md:w-64">
@@ -79,160 +111,121 @@ export function ProductFilterPanel() {
           </div>
 
           {/* Urutkan Berdasarkan */}
-          <div>
-            <h3 className="text-foreground mb-3 text-sm font-medium">
+          <Field>
+            <FieldLabel className="text-foreground text-sm font-medium">
               Urutkan Berdasarkan
-            </h3>
-            <select
-              name="sort"
-              defaultValue={
-                searchParams.get("sortBy")
-                  ? `${searchParams.get("sortBy")}-${searchParams.get("sortOrder")}`
-                  : ""
-              }
-              className="border-border bg-background focus:ring-primary focus:border-primary text-foreground w-full cursor-pointer rounded-md border px-3 py-2 text-sm focus:ring-1 focus:outline-none"
-            >
-              <option value="">Paling Relevan</option>
-              <option value="name-asc">Nama: A - Z</option>
-              <option value="name-desc">Nama: Z - A</option>
-              <option value="price-asc">Harga: Termurah</option>
-              <option value="price-desc">Harga: Termahal</option>
-            </select>
-          </div>
+            </FieldLabel>
+            <Select value={sortValue} onValueChange={setSortValue}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Paling Relevan" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="relevant">Paling Relevan</SelectItem>
+                <SelectItem value="name-asc">Nama: A - Z</SelectItem>
+                <SelectItem value="name-desc">Nama: Z - A</SelectItem>
+                <SelectItem value="price-asc">Harga: Termurah</SelectItem>
+                <SelectItem value="price-desc">Harga: Termahal</SelectItem>
+              </SelectContent>
+            </Select>
+            {/* Hidden input so FormData still picks up the sort value */}
+            <input type="hidden" name="sort" value={sortValue} />
+          </Field>
 
           {/* Jenis Kopi */}
-          <div>
-            <h3 className="text-foreground mb-3 text-sm font-medium">
+          <FieldGroup>
+            <FieldLabel className="text-foreground text-sm font-medium">
               Jenis Kopi
-            </h3>
-            <div className="space-y-2">
+            </FieldLabel>
+            <div className="space-y-3">
               {categories.map((cat) => (
-                <label
-                  key={cat.id}
-                  className="group flex cursor-pointer items-center"
-                >
-                  <input
-                    type="checkbox"
-                    name="categoryId"
-                    value={cat.id}
-                    className="border-border text-primary focus:ring-primary bg-background h-4 w-4 cursor-pointer rounded transition"
-                    defaultChecked={categoryArray.includes(cat.id)}
+                <div key={cat.id} className="flex items-center gap-2.5">
+                  <Checkbox
+                    id={`category-${cat.id}`}
+                    checked={checkedCategories.includes(cat.id)}
+                    onCheckedChange={(checked) =>
+                      handleCategoryToggle(cat.id, !!checked)
+                    }
                   />
-                  <span className="text-muted-foreground group-hover:text-foreground ml-2 text-sm transition">
+                  <Label
+                    htmlFor={`category-${cat.id}`}
+                    className="text-muted-foreground hover:text-foreground cursor-pointer text-sm transition"
+                  >
                     {cat.name}
-                  </span>
-                </label>
+                  </Label>
+                </div>
               ))}
             </div>
-          </div>
+            {/* Hidden inputs so FormData picks up checked categories */}
+            {checkedCategories.map((catId) => (
+              <input key={catId} type="hidden" name="categoryId" value={catId} />
+            ))}
+          </FieldGroup>
 
           {/* Berat (Gram) Dual Slider */}
-          <div>
-            <h3 className="text-foreground mb-3 text-sm font-medium">
+          <Field>
+            <FieldLabel className="text-foreground text-sm font-medium">
               Berat (Gram)
-            </h3>
+            </FieldLabel>
             <div className="flex flex-col space-y-4">
-              <div className="flex items-center space-x-2">
-                <input
+              <div className="flex items-center gap-2">
+                <Input
                   type="text"
                   value={sliders.weightMin.toLocaleString("id-ID")}
                   readOnly
-                  className="border-border bg-background text-foreground pointer-events-none w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
+                  className="pointer-events-none w-full rounded-md text-sm"
                 />
                 <span className="text-muted-foreground">-</span>
-                <input
+                <Input
                   type="text"
                   value={sliders.weightMax.toLocaleString("id-ID")}
                   readOnly
-                  className="border-border bg-background text-foreground pointer-events-none w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
+                  className="pointer-events-none w-full rounded-md text-sm"
                 />
               </div>
-              <div className="bg-accent relative mt-2 h-1.5 w-full rounded-full">
-                <div
-                  className="bg-primary absolute h-1.5 rounded-full transition-all"
-                  style={{
-                    left: `${(sliders.weightMin / maxWeight) * 100}%`,
-                    right: `${100 - (sliders.weightMax / maxWeight) * 100}%`,
-                  }}
-                />
-                <input
-                  type="range"
-                  name="weightMin"
-                  min="0"
-                  max={maxWeight}
-                  value={sliders.weightMin}
-                  step="50"
-                  onChange={handleSliderChange}
-                  className="custom-slider pointer-events-none absolute -top-1.25 w-full appearance-none bg-transparent"
-                />
-                <input
-                  type="range"
-                  name="weightMax"
-                  min="0"
-                  max={maxWeight}
-                  value={sliders.weightMax}
-                  step="50"
-                  onChange={handleSliderChange}
-                  className="custom-slider pointer-events-none absolute -top-1.25 w-full appearance-none bg-transparent"
-                />
-              </div>
+              <Slider
+                min={0}
+                max={maxWeight}
+                step={50}
+                value={[sliders.weightMin, sliders.weightMax]}
+                onValueChange={handleWeightSliderChange}
+              />
             </div>
-          </div>
+          </Field>
 
           {/* Harga (Rp) Dual Slider */}
-          <div>
-            <h3 className="text-foreground mb-3 text-sm font-medium">
+          <Field>
+            <FieldLabel className="text-foreground text-sm font-medium">
               Harga (Rp)
-            </h3>
+            </FieldLabel>
             <div className="flex flex-col space-y-4">
-              <div className="flex items-center space-x-2">
-                <input
+              <div className="flex items-center gap-2">
+                <Input
                   type="text"
                   value={sliders.priceMin.toLocaleString("id-ID")}
                   readOnly
-                  className="border-border bg-background text-foreground pointer-events-none w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
+                  className="pointer-events-none w-full rounded-md text-sm"
                 />
                 <span className="text-muted-foreground">-</span>
-                <input
+                <Input
                   type="text"
                   value={sliders.priceMax.toLocaleString("id-ID")}
                   readOnly
-                  className="border-border bg-background text-foreground pointer-events-none w-full rounded-md border px-3 py-2 text-sm focus:outline-none"
+                  className="pointer-events-none w-full rounded-md text-sm"
                 />
               </div>
-              <div className="bg-accent relative mt-2 h-1.5 w-full rounded-full">
-                <div
-                  className="bg-primary absolute h-1.5 rounded-full transition-all"
-                  style={{
-                    left: `${(sliders.priceMin / maxPrice) * 100}%`,
-                    right: `${100 - (sliders.priceMax / maxPrice) * 100}%`,
-                  }}
-                />
-                <input
-                  type="range"
-                  name="priceMin"
-                  min="0"
-                  max={maxPrice}
-                  value={sliders.priceMin}
-                  step="5000"
-                  onChange={handleSliderChange}
-                  className="custom-slider pointer-events-none absolute -top-1.25 w-full appearance-none bg-transparent"
-                />
-                <input
-                  type="range"
-                  name="priceMax"
-                  min="0"
-                  max={maxPrice}
-                  value={sliders.priceMax}
-                  step="5000"
-                  onChange={handleSliderChange}
-                  className="custom-slider pointer-events-none absolute -top-1.25 w-full appearance-none bg-transparent"
-                />
-              </div>
+              <Slider
+                min={0}
+                max={maxPrice}
+                step={5000}
+                value={[sliders.priceMin, sliders.priceMax]}
+                onValueChange={handlePriceSliderChange}
+              />
             </div>
-          </div>
+          </Field>
 
-          <div className="border-border flex flex-col gap-2 border-t pt-4">
+          <Separator />
+
+          <div className="flex flex-col gap-2">
             <Button
               type="submit"
               variant="default"

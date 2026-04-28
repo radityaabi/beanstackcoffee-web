@@ -1,15 +1,18 @@
 import { Link, useSearchParams } from "react-router-dom";
 import {
-  MagnifyingGlassIcon,
   ShoppingCartIcon,
   CaretLeftIcon,
   CaretRightIcon,
+  CoffeeIcon,
+  FunnelXIcon,
 } from "@phosphor-icons/react";
 import { useProducts } from "@/modules/product/hooks";
 import { ProductFilterPanel } from "@/components/product/product-filter-panel";
 import { formatRupiah, getPreviewUrl } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import type { components } from "@/schema";
 
 type Product = components["schemas"]["Product"];
@@ -56,12 +59,12 @@ export function ProductsRoute() {
 
   return (
     <>
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 md:flex-row lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 md:flex-row md:items-start lg:px-8">
         {/* Sidebar Filter Section */}
         <ProductFilterPanel />
 
         {/* Product Grid */}
-        <div className="grow">
+        <div className="min-h-[60vh] min-w-0 flex-1">
           <div className="mb-6 flex items-center justify-between">
             <p className="text-muted-foreground text-sm">
               Menampilkan {products.length} produk{" "}
@@ -75,22 +78,35 @@ export function ProductsRoute() {
               <div className="border-primary h-8 w-8 animate-spin rounded-full border-b-2" />
             </div>
           ) : products.length === 0 ? (
-            <div className="bg-background border-border rounded-lg border py-20 text-center">
-              <MagnifyingGlassIcon className="text-muted-foreground mx-auto mb-3 h-12 w-12" />
-              <h3 className="text-foreground text-lg font-medium">
-                Tidak ada produk
-              </h3>
-              <p className="text-muted-foreground mt-1">
-                Coba ubah kata kunci pencarian atau filter Anda
-              </p>
-              <Button
-                variant="link"
-                onClick={() => setSearchParams(new URLSearchParams())}
-                className="mt-4"
-              >
-                Reset semua filter
-              </Button>
-            </div>
+            <Card className="border-border/60 mx-auto max-w-lg overflow-hidden shadow-sm">
+              <CardContent className="flex flex-col items-center px-6 py-16 text-center">
+                <div className="bg-muted mb-6 flex h-20 w-20 items-center justify-center rounded-full">
+                  <CoffeeIcon
+                    weight="duotone"
+                    className="text-muted-foreground h-10 w-10"
+                  />
+                </div>
+
+                <h3 className="text-foreground text-xl font-semibold">
+                  Produk tidak ditemukan
+                </h3>
+                <p className="text-muted-foreground mt-2 max-w-xs text-sm leading-relaxed">
+                  Tidak ada produk yang sesuai dengan filter Anda saat ini. Coba
+                  ubah kata kunci atau atur ulang filter.
+                </p>
+
+                <Separator className="my-6 w-16" />
+
+                <Button
+                  variant="outline"
+                  onClick={() => setSearchParams(new URLSearchParams())}
+                  className="gap-2"
+                >
+                  <FunnelXIcon weight="bold" className="h-4 w-4" />
+                  Reset semua filter
+                </Button>
+              </CardContent>
+            </Card>
           ) : (
             <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
               {products.map((product) => (

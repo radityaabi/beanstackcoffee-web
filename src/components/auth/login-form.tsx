@@ -7,8 +7,6 @@ import {
 } from "@phosphor-icons/react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardHeader,
@@ -17,6 +15,14 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { Field, FieldLabel, FieldError } from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupButton,
+  InputGroupText,
+} from "@/components/ui/input-group";
 
 interface LoginFormProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -56,56 +62,61 @@ export function LoginForm({ handleSubmit, isPending, error, successMessage }: Lo
           )}
 
           {error && (
-            <div className="text-destructive mb-6 p-4 text-center text-sm">
+            <FieldError className="mb-6 p-4 text-center">
               {error.message}
-            </div>
+            </FieldError>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1">
-              <Label htmlFor="email">Alamat Email</Label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <EnvelopeSimpleIcon className="text-muted-foreground h-5 w-5" />
-                </div>
-                <Input
+            <Field>
+              <FieldLabel htmlFor="email">Alamat Email</FieldLabel>
+              <InputGroup className="rounded-xl">
+                <InputGroupAddon align="inline-start">
+                  <InputGroupText>
+                    <EnvelopeSimpleIcon className="h-5 w-5" />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <InputGroupInput
                   id="email"
                   name="email"
                   type="email"
                   required
-                  className="rounded-xl bg-white pl-10 focus:bg-amber-50"
                   placeholder="you@example.com"
                 />
-              </div>
-            </div>
+              </InputGroup>
+            </Field>
 
-            <div className="space-y-1">
-              <Label htmlFor="password">Password</Label>
-              <div className="relative">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <LockKeyIcon className="text-muted-foreground h-5 w-5" />
-                </div>
-                <Input
+            <Field>
+              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <InputGroup className="rounded-xl">
+                <InputGroupAddon align="inline-start">
+                  <InputGroupText>
+                    <LockKeyIcon className="h-5 w-5" />
+                  </InputGroupText>
+                </InputGroupAddon>
+                <InputGroupInput
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
                   required
-                  className="rounded-xl bg-white pr-10 pl-10 focus:bg-amber-50"
                   placeholder="••••••••"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  className="text-muted-foreground hover:text-foreground absolute inset-y-0 right-0 flex items-center pr-3"
-                >
-                  {showPassword ? (
-                    <EyeSlashIcon className="h-5 w-5" />
-                  ) : (
-                    <EyeIcon className="h-5 w-5" />
-                  )}
-                </button>
-              </div>
-            </div>
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton
+                    size="icon-xs"
+                    variant="ghost"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="h-5 w-5" />
+                    ) : (
+                      <EyeIcon className="h-5 w-5" />
+                    )}
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
+            </Field>
 
             <Button
               type="submit"
