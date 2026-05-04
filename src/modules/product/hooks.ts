@@ -165,13 +165,13 @@ export const useProductFilters = () => {
   );
 
   const handleWeightSliderChange = useCallback((values: number[]) => {
-    dispatch({ type: "SET_SLIDER", name: "weightMin", value: values[0] });
-    dispatch({ type: "SET_SLIDER", name: "weightMax", value: values[1] });
+    dispatch({ type: "SET_SLIDER", name: "weightMin", value: values[0] ?? 0 });
+    dispatch({ type: "SET_SLIDER", name: "weightMax", value: values[1] ?? 0 });
   }, []);
 
   const handlePriceSliderChange = useCallback((values: number[]) => {
-    dispatch({ type: "SET_SLIDER", name: "priceMin", value: values[0] });
-    dispatch({ type: "SET_SLIDER", name: "priceMax", value: values[1] });
+    dispatch({ type: "SET_SLIDER", name: "priceMin", value: values[0] ?? 0 });
+    dispatch({ type: "SET_SLIDER", name: "priceMax", value: values[1] ?? 0 });
   }, []);
 
   const handleApplyFilter = useCallback(
@@ -191,7 +191,8 @@ export const useProductFilters = () => {
       }
 
       const categories = formData.getAll("categoryId") as string[];
-      if (categories.length > 0) newParams.set("categoryId", categories.join(","));
+      if (categories.length > 0)
+        newParams.set("categoryId", categories.join(","));
 
       const {
         weightMin: weightMin,
