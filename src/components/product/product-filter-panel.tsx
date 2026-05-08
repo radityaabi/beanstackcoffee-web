@@ -34,7 +34,7 @@ export function ProductFilterPanel() {
   const maxPrice = 2000000;
   const maxWeight = 2000;
 
-  const categoryFilter = searchParams.get("categoryId") || "";
+  const categoryFilter = searchParams.get("category") || "";
   const categoryArray = categoryFilter ? categoryFilter.split(",") : [];
 
   const defaultSort = searchParams.get("sortBy")
@@ -45,9 +45,11 @@ export function ProductFilterPanel() {
   const [checkedCategories, setCheckedCategories] =
     useState<string[]>(categoryArray);
 
-  const handleCategoryToggle = (categoryId: string, checked: boolean) => {
+  const handleCategoryToggle = (categorySlug: string, checked: boolean) => {
     setCheckedCategories((prev) =>
-      checked ? [...prev, categoryId] : prev.filter((id) => id !== categoryId),
+      checked
+        ? [...prev, categorySlug]
+        : prev.filter((slug) => slug !== categorySlug),
     );
   };
 
@@ -135,16 +137,16 @@ export function ProductFilterPanel() {
             </FieldLabel>
             <div className="space-y-3">
               {categories.map((category) => (
-                <div key={category.id} className="flex items-center gap-2.5">
+                <div key={category.slug} className="flex items-center gap-2.5">
                   <Checkbox
-                    id={`category-${category.id}`}
-                    checked={checkedCategories.includes(category.id)}
+                    id={`category-${category.slug}`}
+                    checked={checkedCategories.includes(category.slug)}
                     onCheckedChange={(checked) =>
-                      handleCategoryToggle(category.id, !!checked)
+                      handleCategoryToggle(category.slug, !!checked)
                     }
                   />
                   <Label
-                    htmlFor={`category-${category.id}`}
+                    htmlFor={`category-${category.slug}`}
                     className="text-muted-foreground hover:text-foreground cursor-pointer text-sm transition"
                   >
                     {category.name}
@@ -153,12 +155,12 @@ export function ProductFilterPanel() {
               ))}
             </div>
             {/* Hidden inputs so FormData picks up checked categories */}
-            {checkedCategories.map((categoryId) => (
+            {checkedCategories.map((categorySlug) => (
               <input
-                key={categoryId}
+                key={categorySlug}
                 type="hidden"
-                name="categoryId"
-                value={categoryId}
+                name="category"
+                value={categorySlug}
               />
             ))}
           </FieldGroup>

@@ -21,8 +21,8 @@ export interface paths {
                     page?: string;
                     limit?: string;
                     search?: string;
-                    /** @description Filter by category ID. Supports multiple values separated by commas. */
-                    categoryId?: string;
+                    /** @description Filter by category slug. Supports multiple values separated by commas. */
+                    category?: string;
                     minPrice?: string;
                     maxPrice?: string;
                     /** @description Minimum weight in grams */

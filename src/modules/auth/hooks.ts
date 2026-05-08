@@ -55,8 +55,8 @@ export const useLogin = () => {
 
       return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEY });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: AUTH_QUERY_KEY });
       navigate("/dashboard");
     },
   });

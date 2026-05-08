@@ -21,7 +21,7 @@ export function ProductsRoute() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const searchFilter = searchParams.get("search") || "";
-  const categoryFilter = searchParams.get("categoryId") || "";
+  const categoryFilter = searchParams.get("category") || "";
   const sortByParam = searchParams.get("sortBy") || "";
   const sortOrderParam = searchParams.get("sortOrder") || "";
   const minWeightParam = searchParams.get("minWeight") || "0";
@@ -32,7 +32,7 @@ export function ProductsRoute() {
 
   const { data: responseData, isLoading } = useProducts({
     search: searchFilter || undefined,
-    categoryId: categoryFilter || undefined,
+    category: categoryFilter || undefined,
     minWeight: minWeightParam !== "0" ? minWeightParam : undefined,
     maxWeight: maxWeightParam !== "2000" ? maxWeightParam : undefined,
     minPrice: minPriceParam !== "0" ? minPriceParam : undefined,
