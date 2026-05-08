@@ -12,6 +12,7 @@ _references
 dist
 dist-ssr
 *.local
+schema.d.ts
 
 # Editor directories and files
 .vscode/*
