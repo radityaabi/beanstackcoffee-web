@@ -27,6 +27,7 @@ export const useAuth = () => {
   const logout = () => {
     fetchClient.POST("/auth/logout").catch(() => {});
     queryClient.setQueryData(AUTH_QUERY_KEY, null);
+    queryClient.removeQueries({ queryKey: ["cart"] });
     if (window.location.pathname !== "/login") navigate("/login");
   };
 
