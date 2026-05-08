@@ -13,11 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Field,
-  FieldLabel,
-  FieldGroup,
-} from "@/components/ui/field";
+import { Field, FieldLabel, FieldGroup } from "@/components/ui/field";
 import { useProductFilters } from "@/modules/product/hooks";
 import { useCategories } from "@/modules/category/hooks";
 
@@ -46,11 +42,12 @@ export function ProductFilterPanel() {
     : "";
   const [sortValue, setSortValue] = useState(defaultSort);
 
-  const [checkedCategories, setCheckedCategories] = useState<string[]>(categoryArray);
+  const [checkedCategories, setCheckedCategories] =
+    useState<string[]>(categoryArray);
 
-  const handleCategoryToggle = (catId: string, checked: boolean) => {
+  const handleCategoryToggle = (categoryId: string, checked: boolean) => {
     setCheckedCategories((prev) =>
-      checked ? [...prev, catId] : prev.filter((id) => id !== catId),
+      checked ? [...prev, categoryId] : prev.filter((id) => id !== categoryId),
     );
   };
 
@@ -137,27 +134,32 @@ export function ProductFilterPanel() {
               Jenis Kopi
             </FieldLabel>
             <div className="space-y-3">
-              {categories.map((cat) => (
-                <div key={cat.id} className="flex items-center gap-2.5">
+              {categories.map((category) => (
+                <div key={category.id} className="flex items-center gap-2.5">
                   <Checkbox
-                    id={`category-${cat.id}`}
-                    checked={checkedCategories.includes(cat.id)}
+                    id={`category-${category.id}`}
+                    checked={checkedCategories.includes(category.id)}
                     onCheckedChange={(checked) =>
-                      handleCategoryToggle(cat.id, !!checked)
+                      handleCategoryToggle(category.id, !!checked)
                     }
                   />
                   <Label
-                    htmlFor={`category-${cat.id}`}
+                    htmlFor={`category-${category.id}`}
                     className="text-muted-foreground hover:text-foreground cursor-pointer text-sm transition"
                   >
-                    {cat.name}
+                    {category.name}
                   </Label>
                 </div>
               ))}
             </div>
             {/* Hidden inputs so FormData picks up checked categories */}
-            {checkedCategories.map((catId) => (
-              <input key={catId} type="hidden" name="categoryId" value={catId} />
+            {checkedCategories.map((categoryId) => (
+              <input
+                key={categoryId}
+                type="hidden"
+                name="categoryId"
+                value={categoryId}
+              />
             ))}
           </FieldGroup>
 
